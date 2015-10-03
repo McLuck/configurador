@@ -14,5 +14,11 @@ http://www.springframework.org/schema/context/spring-context.xsd
 http://www.springframework.org/schema/util 
 http://www.springframework.org/schema/util/spring-util.xsd">
 
-	<bean id="beanTeste" class="java.util.Date" />	
+	<bean id="executorTarefas" class="com.compsis.configurador.ExecutorTarefas" />
+	
+	<bean id="connectionWrapper" class="com.compsis.configurador.dao.ConnectionWrapper" factory-method="getInstance" />
+	
+	<bean id="executorQueryGenerico" class="com.compsis.configurador.dao.ExecutorQueryGenerico">
+		<property name="connectionWrapper" ref="connectionWrapper" />
+	</bean>
 </beans>

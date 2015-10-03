@@ -4,8 +4,8 @@ package com.compsis.configurador.dominio;
  * DOCUMENTA��O DA CLASSE <br>
  * ---------------------- <br>
  * FINALIDADE: <br>
- * Define Operação, contrato que deve ser utilizado para implementar qualquer Operação do configurador <br>
- * Operacoes nao devem armazenar estados
+ * Define atividade, contrato que deve ser utilizado para implementar qualquer atividade que sera realizada pelo configurador <br>
+ * {@link Atividade} e {@link Tarefa} nao devem armazenar estados
  * <br>
  * HISTÓRICO DE DESENVOLVIMENTO: <br>
  * 03/10/2015 - @author Lucas Israel - Primeira versão da classe. <br>
@@ -14,16 +14,11 @@ package com.compsis.configurador.dominio;
  * LISTA DE CLASSES INTERNAS: <br>
  */
 
-public interface Operacao<D extends Descritor> {
+public interface Atividade {
 	/**
 	 * Executa a operacao para o descritor definido
 	 * @param descritorOperacao
 	 */
-	void executar(D descritorOperacao);
+	void executar(Execucao execucao);
 	
-	/**
-	 * Define um nome unico para operação
-	 * @return
-	 */
-	String nome();
 }
