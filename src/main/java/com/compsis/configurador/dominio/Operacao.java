@@ -1,23 +1,14 @@
-/*
- * COMPSIS – Computadores e Sistemas Ind. e Com. LTDA<br>
- * Produto ${product_name} - ${product_description}<br>
- *
- * Data de Criação: 03/10/2015<br>
- * <br>
- * Todos os direitos reservados.
- */
-
 package com.compsis.configurador.dominio;
 
 /** 
- * DOCUMENTAÇÃO DA CLASSE <br>
+ * DOCUMENTAï¿½ï¿½O DA CLASSE <br>
  * ---------------------- <br>
  * FINALIDADE: <br>
- * Define Operação, contrato que deve ser utilizado para implementar qualquer operação do configurador <br>
+ * Define OperaÃ§Ã£o, contrato que deve ser utilizado para implementar qualquer OperaÃ§Ã£o do configurador <br>
  * Operacoes nao devem armazenar estados
  * <br>
- * HISTÓRICO DE DESENVOLVIMENTO: <br>
- * 03/10/2015 - @author Lucas Israel - Primeira versão da classe. <br>
+ * HISTÃ“RICO DE DESENVOLVIMENTO: <br>
+ * 03/10/2015 - @author Lucas Israel - Primeira versÃ£o da classe. <br>
  *<br>
  *<br>
  * LISTA DE CLASSES INTERNAS: <br>
@@ -29,4 +20,10 @@ public interface Operacao<D extends Descritor> {
 	 * @param descritorOperacao
 	 */
 	void executar(D descritorOperacao);
+	
+	/**
+	 * Define um nome unico para operaÃ§Ã£o
+	 * @return
+	 */
+	String nome();
 }
