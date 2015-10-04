@@ -12,7 +12,8 @@ import org.springframework.context.support.ClassPathXmlApplicationContext;
 public class ConfiguradorApp {
 	
 	public static void main(String[] args) {
-		ApplicationContext appContext = new ClassPathXmlApplicationContext("classpath*:*configurador.xml");
+//		ApplicationContext appContext = new ClassPathXmlApplicationContext("classpath*:*configurador.xml");
 		
+		System.out.println(System.getenv("OS"));
 	}
 }

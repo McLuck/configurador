@@ -14,11 +14,46 @@ http://www.springframework.org/schema/context/spring-context.xsd
 http://www.springframework.org/schema/util 
 http://www.springframework.org/schema/util/spring-util.xsd">
 
-	<bean id="executorTarefas" class="com.compsis.configurador.ExecutorTarefas" />
+	<bean id="configuracao" class="com.compsis.configurador.Configuracao" />
+	<bean id="executorTarefas" class="com.compsis.configurador.executores.ExecutorTarefas" />
+	<bean id="executorExterno" class="com.compsis.configurador.executores.ExecutorExterno" />
+
+	<bean id="executorWindows" class="com.compsis.configurador.executores.ExecutorWindows">
+		<property name="configuracao" ref="configuracao" />
+	</bean>	
 	
-	<bean id="connectionWrapper" class="com.compsis.configurador.dao.ConnectionWrapper" factory-method="getInstance" />
-	
+	<bean id="executorTarefas" class="com.compsis.configurador.executores.ExecutorWindows">
+		<property name="configuracao" ref="configuracao" />
+	</bean>
+	<bean id="connectionWrapper" class="com.compsis.configurador.dao.ConnectionWrapper" factory-method="getInstance">
+		<property name="configuracao" ref="configuracao" />
+	</bean>
 	<bean id="executorQueryGenerico" class="com.compsis.configurador.dao.ExecutorQueryGenerico">
 		<property name="connectionWrapper" ref="connectionWrapper" />
+	</bean>
+	<bean id="controleDeltaDAO" class="com.compsis.configurador.dao.ControleDeltaDAO">
+		<property name="connectionWrapper" ref="connectionWrapper" />
+	</bean>
+	
+	
+	
+	<!-- 	Atividades -->
+	<bean id="iniciarServico" class="com.compsis.configurador.atividades.IniciarServico">
+		<property name="executorExterno" ref="executorExterno" />
+		<property name="configuracao" ref="configuracao" />
+	</bean>
+	<bean id="pararServico" class="com.compsis.configurador.atividades.PararServico">
+		<property name="executorExterno" ref="executorExterno" />
+		<property name="configuracao" ref="configuracao" />
+	</bean>
+	<bean id="fazerBackupVersaoAtual" class="com.compsis.configurador.atividades.FazerBackupVersaoAtual">
+		<property name="configuracao" ref="configuracao" />
+	</bean>
+	<bean id="apagarVersaoAtual" class="com.compsis.configurador.atividades.ApagarVersaoAtual">
+		<property name="configuracao" ref="configuracao" />
+	</bean>
+	<bean id="carregarUltimoDelta" class="com.compsis.configurador.atividades.CarregarUltimoDelta">
+		<property name="configuracao" ref="configuracao" />
+		<property name="controleDeltaDAO" ref="controleDeltaDAO" />
 	</bean>
 </beans>

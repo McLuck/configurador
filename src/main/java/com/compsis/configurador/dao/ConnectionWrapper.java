@@ -16,6 +16,7 @@ import javax.naming.InitialContext;
 import javax.naming.NamingException;
 import javax.sql.DataSource;
 
+import com.compsis.configurador.Configuracao;
 import com.google.common.base.Strings;
 
 /** 
@@ -32,6 +33,7 @@ import com.google.common.base.Strings;
  */
 @SuppressWarnings({ "rawtypes", "unchecked" })
 public class ConnectionWrapper {
+	private Configuracao configuracao;
 	private static ConnectionWrapper me = new ConnectionWrapper();
 
     private String driverClassName = null;
@@ -54,15 +56,14 @@ public class ConnectionWrapper {
 	private ConnectionWrapper() {
 
         try {
-        	String hostDataSource = System.getProperty("hostDataSource");
-        	String dataSource = System.getProperty("dataSource");
-        	if(Strings.isNullOrEmpty(dataSource)) {
+        	if(Strings.isNullOrEmpty(configuracao.getConfigurador().getDataSource())) {
         		datasourceName = "java:/xp";
         	} else {
-        		datasourceName = "java:/"+dataSource;
+        		datasourceName = "java:/"+configuracao.getConfigurador().getDataSource();
         	}
-        	if(Strings.isNullOrEmpty(hostDataSource)) {
-        		hostDataSource = "SICATSGAP";
+        	String hostDataSource = "SICATSGAP";
+        	if(!Strings.isNullOrEmpty(configuracao.getConfigurador().getHostDataSource())) {
+        		hostDataSource = configuracao.getConfigurador().getHostDataSource();
         	}
             Hashtable env = new Hashtable();
             env.put(Context.INITIAL_CONTEXT_FACTORY, "org.jnp.interfaces.NamingContextFactory");
@@ -302,4 +303,13 @@ public class ConnectionWrapper {
 	public void setEmTestes(boolean emTestes) {
     	ConnectionWrapper.emTestes = emTestes;
     }
+	
+	/**
+	 * Valor de configuracao atribuído a configuracao
+	 *
+	 * @param configuracao Atributo da Classe
+	 */
+	public void setConfiguracao(Configuracao configuracao) {
+		this.configuracao = configuracao;
+	}
 }

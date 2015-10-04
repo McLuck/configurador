@@ -7,7 +7,7 @@
  * Todos os direitos reservados.
  */
 
-package com.compsis.configurador;
+package com.compsis.configurador.executores;
 
 import com.compsis.configurador.dominio.Execucao;
 
@@ -15,7 +15,7 @@ import com.compsis.configurador.dominio.Execucao;
  * DOCUMENTAÇÃO DA CLASSE <br>
  * ---------------------- <br>
  * FINALIDADE: <br>
- * TODO Definir documentação da classe. <br>
+ * Define contrato para executores
  * <br>
  * HISTÓRICO DE DESENVOLVIMENTO: <br>
  * 03/10/2015 - @author Lucas Israel - Primeira versão da classe. <br>
@@ -27,8 +27,8 @@ import com.compsis.configurador.dominio.Execucao;
 public interface Executor {
 	/**
 	 * Executa a tarefa
-	 * @param nomeTarefa
+	 * @param parametroExecucao
 	 * @return
 	 */
-	Execucao executar(final String nomeTarefa);
+	Execucao executar(final String parametroExecucao);
 }

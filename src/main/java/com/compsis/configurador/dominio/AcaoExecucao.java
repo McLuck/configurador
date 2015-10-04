@@ -1,7 +1,7 @@
 
 package com.compsis.configurador.dominio;
 
-import com.compsis.configurador.ExecutorTarefas;
+import com.compsis.configurador.executores.ExecutorTarefas;
 
 /** 
  * DOCUMENTAÇÃO DA CLASSE <br>

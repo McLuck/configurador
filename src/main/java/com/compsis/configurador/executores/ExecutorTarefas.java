@@ -1,5 +1,5 @@
 
-package com.compsis.configurador;
+package com.compsis.configurador.executores;
 
 import java.util.Collections;
 import java.util.HashMap;
@@ -59,7 +59,7 @@ public class ExecutorTarefas implements ApplicationContextAware, Executor {
 
 
 	/** 
-	 * @see com.compsis.configurador.Executor#executar(java.lang.String)
+	 * @see com.compsis.configurador.executores.Executor#executar(java.lang.String)
 	 */
 	@Override
 	public Execucao executar(String nomeTarefa) {
