@@ -46,6 +46,14 @@ public enum Constantes {
 	 */
 	MAPA_SCRIPTS_ROLLBACK_DISPONIVEIS, 
 	/**
+	 * Referencia instancia de {@link HashMap} com chave String
+	 * (representando o vetor de {@link String} da versão correspondente)
+	 * e o valor é o arquivo .SQL correspondente. <br>
+	 * Este mapa deverá conter somente scripts que irão ser executados, seja de atualização
+	 * ou rollback
+	 */
+	MAPA_SCRIPTS_PARA_EXECUCAO,
+	/**
 	 * Referencia instancia de {@link ArrayList} com vetor de {@link String}
 	 * contendo as versões disponíveis para realizar o rollback da aplicação,
 	 * ou seja, somente versão atual e anteriores da versão do último delta
@@ -58,5 +66,11 @@ public enum Constantes {
 	 * ou seja, somente versão posteriores da versão do último delta
 	 * @see #ULTIMO_DELTA_EXECUTADO
 	 */
-	VERSOES_SCRIPTS_ATUALIZAO_DISPONIVEIS
+	VERSOES_SCRIPTS_ATUALIZAO_DISPONIVEIS,
+	/**
+	 * Referencia instancia de {@link ArrayList} com vetor de {@link String}
+	 * contendo as versões que serão executadas no banco de dados; 
+	 * As versões aqui deverão obter o arquivo de script no {@link #MAPA_SCRIPTS_PARA_EXECUCAO}
+	 */
+	VERSOES_SCRIPTS_PARA_EXECUCAO
 }
