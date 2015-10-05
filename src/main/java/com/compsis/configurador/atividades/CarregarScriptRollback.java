@@ -20,11 +20,11 @@ import com.compsis.configurador.util.Versoes.VersaoComparator;
  * DOCUMENTAÇÃO DA CLASSE <br>
  * ---------------------- <br>
  * FINALIDADE: <br>
- * Carrega scripts disponiveis na pasta de atualizações <br>
- * Irá manter na lista de atualizações somente os que forem mais recente 
+ * Carrega scripts disponiveis na pasta de rollback <br>
+ * Irá manter na lista de rollback somente os que forem anteriores 
  * ao ultimo delta executado no banco de dados {@link Configuracao#getUltimoDeltaExecutado()} 
  * referenciado por {@link Constantes#ULTIMO_DELTA_EXECUTADO} e a lista referenciada por
- * {@link Constantes#MAPA_SCRIPTS_ATUALIZACOES_DISPONIVEIS}
+ * {@link Constantes#MAPA_SCRIPTS_ROLLBACK_DISPONIVEIS}
  * <br>
  * HISTÓRICO DE DESENVOLVIMENTO: <br>
  * 03/10/2015 - @author Lucas Israel - Primeira versão da classe. <br>
@@ -33,20 +33,20 @@ import com.compsis.configurador.util.Versoes.VersaoComparator;
  * LISTA DE CLASSES INTERNAS: <br>
  */
 
-public class CarregarScriptAtualizacoes implements Atividade {
+public class CarregarScriptRollback implements Atividade {
 	private Configuracao configuracao;
 	/** 
 	 * @see com.compsis.configurador.dominio.Atividade#executar(com.compsis.configurador.dominio.Execucao)
 	 */
 	@Override
 	public void executar(Execucao execucao) {
-		File[] scriptsDisponiveis = configuracao.getConfigurador().getPastaScriptsAtualizacao().listFiles(new FilenameFilter() {
+		File[] scriptsDisponiveis = configuracao.getConfigurador().getPastaScriptsRollback().listFiles(new FilenameFilter() {
 			public boolean accept(File dir, String name) {
 				return name.trim().toLowerCase().endsWith(".sql")
 						&& Pattern.compile("(\\d+\\.)?(\\d+\\.)?(\\*|\\d+)").matcher(name).matches();
 			}
 		});
-		execucao.logger().info("Encontrado "+scriptsDisponiveis.length+" scripts para atualização disponiveis");
+		execucao.logger().info("Encontrado "+scriptsDisponiveis.length+" scripts para rollback disponiveis");
 		List<File> scripts = Arrays.asList(scriptsDisponiveis);
 		Map<String, File> scriptPorVersao = Versoes.montarMapaDeArquivosPorVersao(scripts);
 		List<String[]> versoesDisponiveis = Versoes.montarListaDeVersoes(scripts);
@@ -55,15 +55,15 @@ public class CarregarScriptAtualizacoes implements Atividade {
 		Iterator<String[]> listIterator = versoesDisponiveis.iterator();
 		while (listIterator.hasNext()) {
 			String[] versao = (String[]) listIterator.next();
-			if( new VersaoComparator().compare(versaoAtual, versao) <= 0 ) {
-				execucao.logger().info("Removendo script anterior ou igual a versão atual. Versão atual: "
+			if( new VersaoComparator().compare(versaoAtual, versao) > 0 ) {
+				execucao.logger().info("Removendo script a versão atual. Versão atual: "
 								+Arrays.toString(versaoAtual)+". Removendo script para versão "+Arrays.toString(versao));
 				scriptPorVersao.remove(Arrays.toString(versao));
 				listIterator.remove();
 			}			
 		}
-		execucao.adicionarNaSessao(Constantes.MAPA_SCRIPTS_ATUALIZACOES_DISPONIVEIS.toString(), scriptPorVersao);
-		execucao.adicionarNaSessao(Constantes.VERSOES_SCRIPTS_ATUALIZAO_DISPONIVEIS.toString(), versoesDisponiveis);
+		execucao.adicionarNaSessao(Constantes.MAPA_SCRIPTS_ROLLBACK_DISPONIVEIS.toString(), scriptPorVersao);
+		execucao.adicionarNaSessao(Constantes.VERSOES_SCRIPTS_ROLLBACK_DISPONIVEIS.toString(), versoesDisponiveis);
 	}
 	
 	/**

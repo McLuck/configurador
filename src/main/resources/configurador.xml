@@ -52,6 +52,12 @@ http://www.springframework.org/schema/util/spring-util.xsd">
 	<bean id="apagarVersaoAtual" class="com.compsis.configurador.atividades.ApagarVersaoAtual">
 		<property name="configuracao" ref="configuracao" />
 	</bean>
+	<bean id="carregarScriptAtualizacoes" class="com.compsis.configurador.atividades.CarregarScriptAtualizacoes">
+		<property name="configuracao" ref="configuracao" />
+	</bean>
+	<bean id="carregarScriptRollback" class="com.compsis.configurador.atividades.CarregarScriptRollback">
+		<property name="configuracao" ref="configuracao" />
+	</bean>
 	<bean id="carregarUltimoDelta" class="com.compsis.configurador.atividades.CarregarUltimoDelta">
 		<property name="configuracao" ref="configuracao" />
 		<property name="controleDeltaDAO" ref="controleDeltaDAO" />
