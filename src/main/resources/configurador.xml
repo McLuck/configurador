@@ -13,7 +13,8 @@ http://www.springframework.org/schema/context
 http://www.springframework.org/schema/context/spring-context.xsd
 http://www.springframework.org/schema/util 
 http://www.springframework.org/schema/util/spring-util.xsd">
-
+	
+	<context:component-scan base-package="com.compsis" />
 	<bean id="configuracao" class="com.compsis.configurador.Configuracao" />
 	<bean id="executorTarefas" class="com.compsis.configurador.executores.ExecutorTarefas" />
 	<bean id="executorExterno" class="com.compsis.configurador.executores.ExecutorExterno" />
@@ -22,10 +23,7 @@ http://www.springframework.org/schema/util/spring-util.xsd">
 		<property name="configuracao" ref="configuracao" />
 	</bean>	
 	
-	<bean id="executorTarefas" class="com.compsis.configurador.executores.ExecutorWindows">
-		<property name="configuracao" ref="configuracao" />
-	</bean>
-	<bean id="connectionWrapper" class="com.compsis.configurador.dao.ConnectionWrapper" factory-method="getInstance">
+	<bean id="connectionWrapper" class="com.compsis.configurador.dao.ConnectionWrapper" factory-method="getInstance" depends-on="configuracao">
 		<property name="configuracao" ref="configuracao" />
 	</bean>
 	<bean id="executorQueryGenerico" class="com.compsis.configurador.dao.ExecutorQueryGenerico">
@@ -36,6 +34,9 @@ http://www.springframework.org/schema/util/spring-util.xsd">
 	</bean>
 	
 	
+	<bean id="telaInicial" class="com.compsis.configurador.telas.TelaInicial">
+		<property name="configuracao" ref="configuracao" />
+	</bean>
 	
 	<!-- 	Atividades -->
 	<bean id="iniciarServico" class="com.compsis.configurador.atividades.IniciarServico">
@@ -58,6 +59,19 @@ http://www.springframework.org/schema/util/spring-util.xsd">
 	<bean id="carregarScriptRollback" class="com.compsis.configurador.atividades.CarregarScriptRollback">
 		<property name="configuracao" ref="configuracao" />
 	</bean>
+	<bean id="carregarVersoesAtualizacao" class="com.compsis.configurador.atividades.CarregarVersoesAtualizacao">
+		<property name="configuracao" ref="configuracao" />
+	</bean>
+	<bean id="carregarVersoesRollback" class="com.compsis.configurador.atividades.CarregarVersoesRollback">
+		<property name="configuracao" ref="configuracao" />
+	</bean>
+	<bean id="instalaVersaoSelecionada" class="com.compsis.configurador.atividades.InstalaVersaoSelecionada">
+		<property name="configuracao" ref="configuracao" />
+	</bean>
+	<bean id="apagarArquivosTemporariosJboss" class="com.compsis.configurador.atividades.ApagarArquivosTemporariosJboss">
+		<property name="configuracao" ref="configuracao" />
+	</bean>
+	<bean id="renomearLogsJboss" class="com.compsis.configurador.atividades.RenomearLogsJboss" />
 	<bean id="carregarUltimoDelta" class="com.compsis.configurador.atividades.CarregarUltimoDelta">
 		<property name="configuracao" ref="configuracao" />
 		<property name="controleDeltaDAO" ref="controleDeltaDAO" />

@@ -69,6 +69,9 @@ public class Configuracao {
 			if(!pastaVersao.exists()) {
 				pastaVersao.mkdirs();
 			}
+			if(!pastaBackup.exists()) {
+				pastaBackup.mkdirs();
+			}
 			configurador = new Configurador();
 			configurador.setDataSource("xp");
 			configurador.setSistema("SGAP");

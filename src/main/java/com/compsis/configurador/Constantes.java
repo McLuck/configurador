@@ -5,6 +5,8 @@ import java.util.ArrayList;
 import java.util.HashMap;
 
 import com.compsis.configurador.dominio.ControleDelta;
+import com.compsis.configurador.dominio.usuario.AtualizacaoVersao;
+import com.compsis.configurador.dominio.usuario.InteracaoUsuario;
 
 /** 
  * DOCUMENTAÇÃO DA CLASSE <br>
@@ -54,6 +56,27 @@ public enum Constantes {
 	 */
 	MAPA_SCRIPTS_PARA_EXECUCAO,
 	/**
+	 * Referencia instancia de {@link HashMap} com chave {@link String}
+	 * (representando o vetor de {@link String} da versão correspondente)
+	 * e o valor do mapa é o arquivo de versão do sistema (Ex: WAR, EAR, EXE).
+	 * Somente para arquivos disponiveis para atualização (versão maior que a atual)
+	 */
+	MAPA_SISTEMA_ATUALIZACOES_DISPONIVEIS,
+	/**
+	 * Referencia instancia de {@link HashMap} com chave {@link String}
+	 * (representando o vetor de {@link String} da versão correspondente)
+	 * e o valor do mapa é o arquivo de versão do sistema (Ex: WAR, EAR, EXE).
+	 * Somente para arquivos disponíveis para rollback (versão menor que a atual)
+	 */
+	MAPA_SISTEMA_ROLLBACK_DISPONIVEIS,
+	/**
+	 * Referencia instancia de {@link HashMap} com chave {@link String}
+	 * (representando o vetor de {@link String} da versão correspondente)
+	 * e o valor do mapa é o arquivo de versão do sistema (Ex: WAR, EAR, EXE).
+	 * Este mapa contém os arquivos para instalação do sistem
+	 */
+	MAPA_SISTEMA_PARA_INSTALAR,
+	/**
 	 * Referencia instancia de {@link ArrayList} com vetor de {@link String}
 	 * contendo as versões disponíveis para realizar o rollback da aplicação,
 	 * ou seja, somente versão atual e anteriores da versão do último delta
@@ -72,5 +95,26 @@ public enum Constantes {
 	 * contendo as versões que serão executadas no banco de dados; 
 	 * As versões aqui deverão obter o arquivo de script no {@link #MAPA_SCRIPTS_PARA_EXECUCAO}
 	 */
-	VERSOES_SCRIPTS_PARA_EXECUCAO
+	VERSOES_SCRIPTS_PARA_EXECUCAO,
+	/**
+	 * Referencia instancia de {@link ArrayList} com vetor de {@link String}
+	 * condendo as versões de sistema (WAR, EAR, EXE, etc) disponíveis para atualização
+	 */
+	VERSOES_SISTEMA_ATUALIZACOES_DISPONIVEIS, 
+	/**
+	 * Referencia instancia de {@link ArrayList} com vetor de {@link String}
+	 * condendo as versões de sistema (WAR, EAR, EXE, etc) disponíveis para rollback
+	 */
+	VERSOES_SISTEMA_ROLLBACK_DISPONIVEIS, 
+	/**
+	 * Referencia instancia de {@link ArrayList} com vetor de {@link String}
+	 * condendo as versões de sistema (WAR, EAR, EXE, etc) selecionadas para realizar
+	 * instalação
+	 */
+	VERSOES_PARA_INSTALAR, 
+	/**
+	 * Referencia instancia de {@link AtualizacaoVersao}, subclasse de {@link InteracaoUsuario}
+	 * utilizada para coletar dados do usuario nas interfaces (TO's) 
+	 */
+	ATUALIZACAO_VERSAO_INTERACAO_USUARIO
 }

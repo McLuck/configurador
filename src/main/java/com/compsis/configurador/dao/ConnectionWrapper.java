@@ -11,6 +11,7 @@ import java.sql.SQLException;
 import java.util.Hashtable;
 import java.util.Properties;
 
+import javax.annotation.PostConstruct;
 import javax.naming.Context;
 import javax.naming.InitialContext;
 import javax.naming.NamingException;
@@ -38,7 +39,7 @@ public class ConnectionWrapper {
 
     private String driverClassName = null;
     public String dataBaseName = "";
-    private String databaseparameters = "databaseparameters.properties";
+    private String databaseparameters = "database.properties";
     private Context ctx = null;
     private String datasourceName;
 
@@ -52,36 +53,37 @@ public class ConnectionWrapper {
         databaseparameters = dp;
     }
 
+	@PostConstruct
+	public void setUp() {
+		try {
+			if(Strings.isNullOrEmpty(configuracao.getConfigurador().getDataSource())) {
+				datasourceName = "java:/xp";
+			} else {
+				datasourceName = "java:/"+configuracao.getConfigurador().getDataSource();
+			}
+			String hostDataSource = "SICATSGAP";
+			if(!Strings.isNullOrEmpty(configuracao.getConfigurador().getHostDataSource())) {
+				hostDataSource = configuracao.getConfigurador().getHostDataSource();
+			}
+			Hashtable env = new Hashtable();
+			env.put(Context.INITIAL_CONTEXT_FACTORY, "org.jnp.interfaces.NamingContextFactory");
+			env.put(Context.PROVIDER_URL, hostDataSource);
+			env.put(Context.URL_PKG_PREFIXES, "org.jboss.naming:org.jnp.interfaces");
+			ctx = new InitialContext(env);
+			
+			
+		} catch (NamingException ex) {
+			Properties props = new Properties();
+			try {
+				props.load(getClass().getClassLoader().getResourceAsStream(databaseparameters));
+				datasourceName = props.getProperty("DATASOURCE_NAME");
+			} catch (IOException ex1) {
+				throw new RuntimeException(ex1 );
+			}        	
+		}		
+	}
     
 	private ConnectionWrapper() {
-
-        try {
-        	if(Strings.isNullOrEmpty(configuracao.getConfigurador().getDataSource())) {
-        		datasourceName = "java:/xp";
-        	} else {
-        		datasourceName = "java:/"+configuracao.getConfigurador().getDataSource();
-        	}
-        	String hostDataSource = "SICATSGAP";
-        	if(!Strings.isNullOrEmpty(configuracao.getConfigurador().getHostDataSource())) {
-        		hostDataSource = configuracao.getConfigurador().getHostDataSource();
-        	}
-            Hashtable env = new Hashtable();
-            env.put(Context.INITIAL_CONTEXT_FACTORY, "org.jnp.interfaces.NamingContextFactory");
-            env.put(Context.PROVIDER_URL, hostDataSource);
-            env.put(Context.URL_PKG_PREFIXES, "org.jboss.naming:org.jnp.interfaces");
-            ctx = new InitialContext(env);
-
-
-        } catch (NamingException ex) {
-        	Properties props = new Properties();
-        	try {
-        		props.load(getClass().getClassLoader().getResourceAsStream(databaseparameters));
-        		datasourceName = props.getProperty("DATASOURCE_NAME");
-        	} catch (IOException ex1) {
-        		throw new RuntimeException(ex1 );
-        	}        	
-        }
-
     }
 
 
