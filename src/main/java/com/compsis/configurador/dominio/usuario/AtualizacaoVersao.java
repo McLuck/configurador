@@ -14,7 +14,7 @@ package com.compsis.configurador.dominio.usuario;
  * LISTA DE CLASSES INTERNAS: <br>
  */
 
-public class AtualizacaoVersao {
+public class AtualizacaoVersao extends InteracaoUsuario {
 	private boolean apagarPastaTemp;
 	private boolean apagarPastaData;
 	private boolean apagarPastaWork;

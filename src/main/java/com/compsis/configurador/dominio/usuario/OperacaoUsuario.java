@@ -15,5 +15,5 @@ package com.compsis.configurador.dominio.usuario;
  */
 
 public enum OperacaoUsuario {
-	ATUALIZAR_VERSAO, ROLLBACK_VERSAO
+	ATUALIZAR_VERSAO, ROLLBACK_VERSAO, INSTALACAO_JBOSS
 }

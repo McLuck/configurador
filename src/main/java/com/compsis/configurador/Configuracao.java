@@ -38,12 +38,19 @@ public class Configuracao {
 	
 	@PostConstruct
 	public void setUp() {
+		String CONFIGURADOR_SICAT = System.getenv("CONFIGURADOR_SICAT");
+		if(Strings.isNullOrEmpty(CONFIGURADOR_SICAT)) {
+			throw new RuntimeException("Variável de ambiente CONFIGURADOR_SICAT não está definida. Ela deve ser definida informando o diretório raiz do configurador");
+		}
 		String sicatHome = System.getenv("SICAT_HOME");
 		if(Strings.isNullOrEmpty(sicatHome)) {
-			throw new RuntimeException("Variável de ambiente SICAT_HOME não está definida. Ela deve ser definida informando o diretório raiz do sicat");
+			sicatHome = "D:\\sicat";
 		}
 		File sicatHomeFile = new File(sicatHome);
-		homeConfigurador = new File(sicatHomeFile.getParent(), "configurador");
+		if(!sicatHomeFile.exists()) {
+			sicatHomeFile.mkdirs();
+		}
+		homeConfigurador = new File(CONFIGURADOR_SICAT, "configurador");
 		if(!homeConfigurador.exists()) {
 			homeConfigurador.mkdirs();
 		}
@@ -60,6 +67,10 @@ public class Configuracao {
 			File pastaScripts = new File(homeConfigurador, "scripts");
 			File pastaScriptsAtualizacao = new File(pastaScripts, "update");
 			File pastaScriptsRollback = new File(pastaScripts, "rollback");
+			File pastaNovasInfras = new File(homeConfigurador, "infra");
+			if(!pastaNovasInfras.exists()) {
+				pastaNovasInfras.mkdirs();
+			}
 			if(!pastaScriptsAtualizacao.exists()) {
 				pastaScriptsAtualizacao.mkdirs();
 			}
@@ -74,16 +85,15 @@ public class Configuracao {
 			}
 			configurador = new Configurador();
 			configurador.setDataSource("xp");
-			configurador.setSistema("SGAP");
+			configurador.setSistema("SGAPSA");
 			configurador.setHostDataSource("SICATSGAP");
 			configurador.setPastaBackup(pastaBackup);
 			configurador.setPastaScriptsAtualizacao(pastaScriptsAtualizacao);
 			configurador.setPastaScriptsRollback(pastaScriptsRollback);
-			File pastaSistema = new File(new File(sicatHomeFile, "server"), configurador.getSistema());
-			pastaSistema = new File(new File(pastaSistema, "deploy"), "sgap-sa");
-			if(!pastaSistema.exists()) {
-				pastaSistema.mkdirs();
-			}
+			configurador.setPastaNovasInfra(pastaNovasInfras);
+			configurador.setPastaRaizConfigurador(homeConfigurador);
+			configurador.setPastaRaizInfra(sicatHomeFile);
+			File pastaSistema = new File( new File ( new File( new File( new File(sicatHomeFile, "app") , "server"), "sgap"), "deploy"), "sgap-sa");
 			configurador.setPastaSistema(pastaSistema);
 			configurador.setTipoArquivoSistema("WAR,EAR");
 			configurador.setPastaAtualizacaoVersao(pastaVersao);

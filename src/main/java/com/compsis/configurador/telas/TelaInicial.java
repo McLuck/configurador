@@ -68,21 +68,31 @@ public class TelaInicial {
 		
 		final JTextPane txtDescription = new JTextPane();
 		txtDescription.setFont(new Font("Arial", Font.BOLD, 12));
-		txtDescription.setBounds(10, 91, 477, 200);
+		txtDescription.setBounds(10, 131, 477, 160);
 		telaInicial.getContentPane().add(txtDescription);
+		
+		JButton btInstalarJboss = new JButton("Instalar infra (Jboss)");
+		btInstalarJboss.setBounds(10, 91, 477, 29);
+		telaInicial.getContentPane().add(btInstalarJboss);
 		
 		StringBuilder builder = new StringBuilder();
 		builder.append("Atualização do sistema \n")
-		.append("Irá realizar atualização do sistema com as versões diponíveis no diretório {DIRSYSTEMUPDATE}.\n")
-		.append("Os scripts de atualização do sistema devem estar disponíveis no diretório {DIRSCRIPTSUPDATE}");
-		final String textoUpdate = builder.toString().replace("{DIRSYSTEMUPDATE}", configuracao.getConfigurador().getPastaAtualizacaoVersao().getAbsolutePath())
-				.replace("{DIRSCRIPTSUPDATE}", configuracao.getConfigurador().getPastaScriptsAtualizacao().getAbsolutePath());
+		.append("Irá realizar atualização do sistema com as versões diponíveis no diretório ").append(configuracao.getConfigurador().getPastaAtualizacaoVersao().getAbsolutePath()).append(". \n")
+		.append("Os scripts de atualização do sistema devem estar disponíveis no diretório ").append(configuracao.getConfigurador().getPastaScriptsAtualizacao().getAbsolutePath());
+		final String textoUpdate = builder.toString();
+		
 		builder.setLength(0);
 		builder.append("Rollback de sistema \n")
-		.append("Irá realizar rollback do sistema com as versões diponíveis no diretório {DIRSYSTEMROLLBACK}.\n")
-		.append("Os scripts de rollback do sistema devem estar disponíveis no diretório {DIRSCRIPTSROLLBACK}");
-		final String textoRollback = builder.toString().replace("{DIRSYSTEMROLLBACK}", configuracao.getConfigurador().getPastaBackup().getAbsolutePath())
-				.replace("{DIRSCRIPTSROLLBACK}", configuracao.getConfigurador().getPastaScriptsRollback().getAbsolutePath());
+		.append("Irá realizar rollback do sistema com as versões diponíveis no diretório ").append(configuracao.getConfigurador().getPastaBackup().getAbsolutePath()).append(" \n")
+		.append("Os scripts de rollback do sistema devem estar disponíveis no diretório ") .append(configuracao.getConfigurador().getPastaScriptsRollback().getAbsolutePath());
+		final String textoRollback = builder.toString();
+		
+		builder.setLength(0);
+		builder.append("Irá instalar o Jboss. Caso se deseje instalar o jboss em algum local diferente do padrão (")
+		.append(configuracao.getConfigurador().getPastaRaizInfra()).append("), informar o local da instalação diferente durante a instalação. \n")
+		.append("Esta operação deve ser realizada somente se estiver executando o configurador como administrador. A infra original está disponível no diretório ")
+		.append(configuracao.getConfigurador().getPastaNovasInfra().getAbsolutePath()).append("\n");
+		final String textoInstalarJboss = builder.toString();
 		
 		btRollbackVersao.addMouseListener(new MouseListener() {
 			@Override
@@ -126,6 +136,36 @@ public class TelaInicial {
 			@Override
 			public void mouseEntered(MouseEvent e) {
 				txtDescription.setText(textoUpdate);
+			}
+			
+			@Override
+			public void mouseClicked(MouseEvent e) {
+				txtDescription.setText("clicked");
+			}
+		});
+		
+		btInstalarJboss.addMouseListener(new MouseListener() {
+			
+			@Override
+			public void mouseReleased(MouseEvent e) {
+				// TODO Auto-generated method stub
+				
+			}
+			
+			@Override
+			public void mousePressed(MouseEvent e) {
+				txtDescription.setText("");
+			}
+			
+			@Override
+			public void mouseExited(MouseEvent e) {
+				// TODO Auto-generated method stub
+				
+			}
+			
+			@Override
+			public void mouseEntered(MouseEvent e) {
+				txtDescription.setText(textoInstalarJboss);
 			}
 			
 			@Override

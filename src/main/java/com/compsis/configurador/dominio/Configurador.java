@@ -28,6 +28,9 @@ public class Configurador implements Serializable {
 	private String tipoArquivoSistema;
 	private String sistema;
 	private File pastaAtualizacaoVersao;
+	private File pastaNovasInfra;
+	private File pastaRaizConfigurador;
+	private File pastaRaizInfra;
 	
 	/**
 	 * Método de recuperação do campo dataSource
@@ -177,8 +180,57 @@ public class Configurador implements Serializable {
 	public File getPastaAtualizacaoVersao() {
 		return pastaAtualizacaoVersao;
 	}
-	
+	/**
+	 * Método de recuperação do campo pastaNovasInfra
+	 *
+	 * @return valor do campo pastaNovasInfra
+	 */
+	public File getPastaNovasInfra() {
+		return pastaNovasInfra;
+	}
+	/**
+	 * Valor de pastaNovasInfra atribuído a pastaNovasInfra
+	 *
+	 * @param pastaNovasInfra Atributo da Classe
+	 */
+	public void setPastaNovasInfra(File pastaNovasInfra) {
+		this.pastaNovasInfra = pastaNovasInfra;
+	}
+	/**
+	 * Método de recuperação do campo pastaRaizConfigurador
+	 *
+	 * @return valor do campo pastaRaizConfigurador
+	 */
+	public File getPastaRaizConfigurador() {
+		return pastaRaizConfigurador;
+	}
+	/**
+	 * Valor de pastaRaizConfigurador atribuído a pastaRaizConfigurador
+	 *
+	 * @param pastaRaizConfigurador Atributo da Classe
+	 */
+	public void setPastaRaizConfigurador(File pastaRaizConfigurador) {
+		this.pastaRaizConfigurador = pastaRaizConfigurador;
+	}
+	/**
+	 * Método de recuperação do campo pastaRaizInfra
+	 *
+	 * @return valor do campo pastaRaizInfra
+	 */
+	public File getPastaRaizInfra() {
+		return pastaRaizInfra;
+	}
+	/**
+	 * Valor de pastaRaizInfra atribuído a pastaRaizInfra
+	 *
+	 * @param pastaRaizInfra Atributo da Classe
+	 */
+	public void setPastaRaizInfra(File pastaRaizInfra) {
+		this.pastaRaizInfra = pastaRaizInfra;
+	}
 	/** 
+	 * TODO Descrição do Método
+	 * @return
 	 * @see java.lang.Object#toString()
 	 */
 	@Override
@@ -202,7 +254,14 @@ public class Configurador implements Serializable {
 		builder.append(sistema);
 		builder.append(", pastaAtualizacaoVersao=");
 		builder.append(pastaAtualizacaoVersao);
+		builder.append(", pastaNovasInfra=");
+		builder.append(pastaNovasInfra);
+		builder.append(", pastaRaizConfigurador=");
+		builder.append(pastaRaizConfigurador);
+		builder.append(", pastaRaizInfra=");
+		builder.append(pastaRaizInfra);
 		builder.append("]");
 		return builder.toString();
 	}
+		
 }
