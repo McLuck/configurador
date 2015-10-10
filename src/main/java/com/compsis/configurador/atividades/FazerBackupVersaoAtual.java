@@ -30,12 +30,12 @@ public class FazerBackupVersaoAtual implements Atividade {
 	 */
 	@Override
 	public void executar(Execucao execucao) {
-		execucao.logger().info("Iniciando backup das versões atuais");
+		execucao.info("Iniciando backup das versões atuais");
 		File[] arquivosEncontrados = configuracao.arquivosDoSistema();
 		
 		for (File arquivoParaBackup : arquivosEncontrados) {
 			File arquivoBkp = new File(configuracao.getConfigurador().getPastaBackup(), arquivoParaBackup.getName());
-			execucao.logger().info("Realizando backup de "+arquivoParaBackup.getAbsolutePath()+" para "+arquivoBkp.getAbsolutePath());
+			execucao.info("Realizando backup de "+arquivoParaBackup.getAbsolutePath()+" para "+arquivoBkp.getAbsolutePath());
 			try {
 				Files.copy(arquivoParaBackup, arquivoBkp);
 			} catch (IOException e) {

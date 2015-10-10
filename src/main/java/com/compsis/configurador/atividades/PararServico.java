@@ -28,7 +28,7 @@ public class PararServico implements Atividade {
 	 */
 	@Override
 	public void executar(final Execucao execucao) {
-		execucao.logger().info("Parando serviço "+configuracao.getConfigurador().getSistema());
+		execucao.info("Parando serviço "+configuracao.getConfigurador().getSistema());
 		executorExterno.pararServico(configuracao.getConfigurador().getSistema());
 	}
 

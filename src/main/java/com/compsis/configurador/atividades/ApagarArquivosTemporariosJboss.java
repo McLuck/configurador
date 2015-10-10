@@ -31,7 +31,7 @@ public class ApagarArquivosTemporariosJboss implements Atividade {
 	 */
 	@Override
 	public void executar(Execucao execucao) {
-		execucao.logger().info("Apagando arquivos temporários do sistema "+configuracao.getConfigurador().getSistema());
+		execucao.info("Apagando arquivos temporários do sistema "+configuracao.getConfigurador().getSistema());
 		File root = configuracao.getConfigurador().getPastaSistema().getParentFile().getParentFile();
 		AtualizacaoVersao atualizacaoVersao = execucao.obterDaSessao(Constantes.ATUALIZACAO_VERSAO_INTERACAO_USUARIO.toString());
 		if(atualizacaoVersao.isApagarPastaData()) {

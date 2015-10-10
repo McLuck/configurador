@@ -28,11 +28,11 @@ public class ApagarVersaoAtual implements Atividade {
 	 */
 	@Override
 	public void executar(Execucao execucao) {
-		execucao.logger().info("Apagando arquivos das versões atuais");
+		execucao.info("Apagando arquivos das versões atuais");
 		File[] arquivosEncontrados = configuracao.arquivosDoSistema();
 		
 		for (File arquivoEncontrado : arquivosEncontrados) {
-			execucao.logger().info("Apagando arquivo "+arquivoEncontrado.getAbsolutePath());
+			execucao.info("Apagando arquivo "+arquivoEncontrado.getAbsolutePath());
 			arquivoEncontrado.delete();
 		}
 	}

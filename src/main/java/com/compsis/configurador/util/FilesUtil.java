@@ -46,10 +46,12 @@ public final class FilesUtil {
 				if(logger.isDebugEnabled()) {
 					logger.debug("Apagando arquivo "+arquivo.getAbsolutePath());
 				}
+				arquivo.delete();
 			} else {
 				for (File oArquivo : arquivo.listFiles()) {
 					apagarDiretorio(oArquivo, logger); 
 				}
+				arquivo.delete();
 			}			
 		}
 	}

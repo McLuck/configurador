@@ -36,7 +36,7 @@ public class CarregarVersoesRollback implements Atividade{
 	 */
 	@Override
 	public void executar(Execucao execucao) {
-		execucao.logger().info("Carregando backup de versões disponíveis do diretório "+configuracao.getConfigurador().getPastaBackup().getAbsolutePath());
+		execucao.info("Carregando backup de versões disponíveis do diretório "+configuracao.getConfigurador().getPastaBackup().getAbsolutePath());
 		final String tiposSistema = configuracao.getConfigurador().getTipoArquivoSistema();
 		File[] arquivosSistema = configuracao.getConfigurador().getPastaBackup().listFiles(new FilenameFilter() {
 			public boolean accept(File dir, String name) {
@@ -59,13 +59,13 @@ public class CarregarVersoesRollback implements Atividade{
 		while (listIterator.hasNext()) {
 			String[] versao = (String[]) listIterator.next();
 			if( new VersaoComparator().compare(versaoAtual, versao) >= 0 ) {
-				execucao.logger().info("Removendo arquivo posterior ou igual a versão atual. Versão atual: "
+				execucao.info("Removendo arquivo posterior ou igual a versão atual. Versão atual: "
 								+Arrays.toString(versaoAtual)+". Removendo arquivo da versão "+Arrays.toString(versao));
 				arquivosPorVersao.remove(Arrays.toString(versao));
 				listIterator.remove();
 			}			
 		}
-		execucao.logger().info("Arquivos carregados: "+arquivosPorVersao);
+		execucao.info("Arquivos carregados: "+arquivosPorVersao);
 		execucao.adicionarNaSessao(Constantes.MAPA_SISTEMA_ROLLBACK_DISPONIVEIS.toString(), arquivosPorVersao);
 		execucao.adicionarNaSessao(Constantes.VERSOES_SISTEMA_ROLLBACK_DISPONIVEIS.toString(), listaDeVersoes);
 	}

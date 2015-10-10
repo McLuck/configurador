@@ -32,10 +32,16 @@ public class InstalarJboss implements Atividade {
 	 */
 	@Override
 	public void executar(Execucao execucao) {
-		execucao.logger().info("Iniciando instalação da infra");
-		String sicatHome = configuracao.getConfigurador().getPastaRaizInfra().getAbsolutePath();
+		execucao.info("Iniciando instalação da infra");
 		File pastaInfra = configuracao.getConfigurador().getPastaNovasInfra();
-		File pastaSicat = new File(sicatHome);
+		File pastaSicat = configuracao.getConfigurador().getPastaRaizInfra();
+		File pastaApp;
+		if(pastaSicat.getName().endsWith("app")) {
+			pastaApp = pastaSicat;
+			pastaSicat = pastaSicat.getParentFile();
+		} else {
+			pastaApp = new File(pastaSicat, "app");
+		}
 		FilesUtil.validarDiretorio(pastaInfra);
 		File infraJboss = new File(pastaInfra, Constantes.INFRA_JBOSS.toString() + ".zip");
 		if(!infraJboss.exists()) {
@@ -46,14 +52,14 @@ public class InstalarJboss implements Atividade {
 		
 		if(pastaSicat.exists()) {
 			if(instalacao.isSubstituirInfraOriginal()) {
-				execucao.logger().warn("Infra já existe no caminho "+pastaSicat.getAbsolutePath()+" e será substituida.");
+				execucao.warn("Infra já existe no caminho "+pastaSicat.getAbsolutePath()+" e será substituida.");
 				if(instalacao.isRealizarBkp()) {
-					execucao.logger().info("Realizando backup do diretorio "+pastaSicat.getAbsolutePath()+" em "+configuracao.getConfigurador().getPastaBackup());
+					execucao.info("Realizando backup do diretorio "+pastaSicat.getAbsolutePath()+" em "+configuracao.getConfigurador().getPastaBackup());
 					File arquivoBkp = new File(configuracao.getConfigurador().getPastaBackup(), "bkpJboss.zip");
 					FilesUtil.zipDir(pastaSicat, arquivoBkp); 
-					execucao.logger().info("Backup do diretorio "+pastaSicat.getAbsolutePath()+" realizado em "+arquivoBkp.getAbsolutePath());
+					execucao.info("Backup do diretorio "+pastaSicat.getAbsolutePath()+" realizado em "+arquivoBkp.getAbsolutePath());
 				}
-				execucao.logger().warn("Apagando diretório "+pastaSicat.getAbsolutePath());
+				execucao.warn("Apagando diretório "+pastaSicat.getAbsolutePath());
 				FilesUtil.apagarDiretorio(pastaSicat, execucao.logger());
 			} else {
 				throw new RuntimeException("Diretório "+pastaSicat.getAbsolutePath()+" já existe e não será substituido. Instalação abortada.");
@@ -62,14 +68,14 @@ public class InstalarJboss implements Atividade {
 		pastaSicat.mkdirs();
 		FilesUtil.unzip(infraJboss, pastaSicat );
 		
-		execucao.logger().warn("Definindo variáveis de ambiente SICAT_HOME, JBOSS_HOME e STDOUT. Este recurso exige que a execução do configurador esteja como administradora do sistema.");
-		executorExterno.executar("SETX JBOSS_HOME \""+pastaSicat.getAbsolutePath()+"\" /M");
-		executorExterno.executar("SETX SICAT_HOME \""+pastaSicat.getAbsolutePath()+"\" /M");
-		executorExterno.executar("SETX STDOUT \""+new File(pastaSicat, "app").getAbsolutePath()+"\" /M");
+		execucao.warn("Definindo variáveis de ambiente SICAT_HOME, JBOSS_HOME e STDOUT. Este recurso exige que a execução do configurador esteja como administradora do sistema.");
+		executorExterno.executar("SETX JBOSS_HOME \""+pastaApp.getAbsolutePath()+"\" /M");
+		executorExterno.executar("SETX SICAT_HOME \""+pastaApp.getAbsolutePath()+"\" /M");
+		executorExterno.executar("SETX STDOUT \""+pastaApp.getAbsolutePath()+"\" /M");
 		
-		executorExterno.executar("CALL "+new File(new File(new File(sicatHome, "app"), "bin"), "install.bat").getAbsolutePath());
+		executorExterno.executar(new File(new File(pastaApp, "bin"), "install.bat").getAbsolutePath());
 		
-		execucao.logger().info("Instalação da infra Jboss concluida");
+		execucao.info("Instalação da infra Jboss concluida");
 	}
 
 	/**

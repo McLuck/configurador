@@ -36,9 +36,26 @@ http://www.springframework.org/schema/util/spring-util.xsd">
 	
 	<bean id="telaInicial" class="com.compsis.configurador.telas.TelaInicial">
 		<property name="configuracao" ref="configuracao" />
+		<property name="executorTarefas" ref="executorTarefas" />
+	</bean>
+	
+	<!-- 	Tarefas -->
+	<bean id="tarefaInfraJboss" class="com.compsis.configurador.dominio.Tarefa" scope="prototype">
+		<constructor-arg>
+			<util:list>
+				<ref bean="telaInstalacaoInfraJboss" />
+				<ref bean="logarInstalacaoJboss" />
+				<ref bean="pararServico" />
+				<ref bean="instalarJboss" />
+			</util:list>
+		</constructor-arg>
+		<property name="nome" value="EXECUTAR_INSTALACAO_INFRA_JBOSS" />
 	</bean>
 	
 	<!-- 	Atividades -->
+	<bean id="telaInstalacaoInfraJboss" class="com.compsis.configurador.telas.TelaInstalacaoInfraJboss" scope="prototype" >
+		<property name="configuracao" ref="configuracao" />
+	</bean>
 	<bean id="iniciarServico" class="com.compsis.configurador.atividades.IniciarServico">
 		<property name="executorExterno" ref="executorExterno" />
 		<property name="configuracao" ref="configuracao" />
@@ -68,10 +85,15 @@ http://www.springframework.org/schema/util/spring-util.xsd">
 	<bean id="instalaVersaoSelecionada" class="com.compsis.configurador.atividades.InstalaVersaoSelecionada">
 		<property name="configuracao" ref="configuracao" />
 	</bean>
+	<bean id="instalarJboss" class="com.compsis.configurador.atividades.InstalarJboss">
+		<property name="configuracao" ref="configuracao" />
+		<property name="executorExterno" ref="executorExterno" />
+	</bean>
 	<bean id="apagarArquivosTemporariosJboss" class="com.compsis.configurador.atividades.ApagarArquivosTemporariosJboss">
 		<property name="configuracao" ref="configuracao" />
 	</bean>
 	<bean id="renomearLogsJboss" class="com.compsis.configurador.atividades.RenomearLogsJboss" />
+	<bean id="logarInstalacaoJboss" class="com.compsis.configurador.atividades.LogarInstalacaoJboss" />
 	<bean id="carregarUltimoDelta" class="com.compsis.configurador.atividades.CarregarUltimoDelta">
 		<property name="configuracao" ref="configuracao" />
 		<property name="controleDeltaDAO" ref="controleDeltaDAO" />

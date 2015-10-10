@@ -28,7 +28,7 @@ public class IniciarServico implements Atividade {
 	 */
 	@Override
 	public void executar(final Execucao execucao) {
-		execucao.logger().info("Iniciando serviço "+configuracao.getConfigurador().getSistema());
+		execucao.info("Iniciando serviço "+configuracao.getConfigurador().getSistema());
 		executorExterno.iniciarServico(configuracao.getConfigurador().getSistema());
 	}
 

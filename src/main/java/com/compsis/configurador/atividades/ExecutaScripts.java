@@ -32,7 +32,7 @@ public class ExecutaScripts implements Atividade {
 	 */
 	@Override
 	public void executar(Execucao execucao) {
-		execucao.logger().info("Iniciando execução de scripts");
+		execucao.info("Iniciando execução de scripts");
 		List<String[]> versoesDisponiveis = execucao.obterDaSessao(Constantes.VERSOES_SCRIPTS_PARA_EXECUCAO.toString());
 		Map<String, File> scriptPorVersao = execucao.obterDaSessao(Constantes.MAPA_SCRIPTS_PARA_EXECUCAO.toString());
 		for (String[] versao : versoesDisponiveis) {

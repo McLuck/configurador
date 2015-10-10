@@ -35,7 +35,7 @@ public class RenomearLogsJboss implements Atividade {
 		String stdoutPath = System.getenv("STDOUT");
 		if(atualizacaoVersao.isRenomearLogs()) {
 			if(Strings.isNullOrEmpty(stdoutPath)) {
-				execucao.logger().warn("Variável de ambiente STDOUT não definida. Favor definir variavel de ambiente referenciando a pasta do STDOUT do sistema. Não será possível renomear logs.");
+				execucao.warn("Variável de ambiente STDOUT não definida. Favor definir variavel de ambiente referenciando a pasta do STDOUT do sistema. Não será possível renomear logs.");
 			} else {
 				File rootLog = new File(stdoutPath);
 				File pastasRenomeados = new File(rootLog, "logs_renomeados");

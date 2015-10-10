@@ -9,10 +9,14 @@
 
 package com.compsis.configurador.dominio;
 
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 import org.slf4j.Logger;
+
+import com.google.common.base.Strings;
 
 /** 
  * DOCUMENTAÇÃO DA CLASSE <br>
@@ -34,6 +38,7 @@ public class Execucao {
 	private Logger logger;
 	private AcaoExecucao acaoExecucao = AcaoExecucao.CONTINUAR_EXECUCAO;
 	private Map<String, Object> sessao = new HashMap<String, Object>();
+	private List<String> mensagens = new ArrayList<String>();
 	
 	/** 
 	 * Construtor padrão da classe
@@ -113,5 +118,38 @@ public class Execucao {
 			this.sessao = execucao.sessao;			
 		}
 		return this;
+	}
+	
+	public void adicionarMensagem(final String chave, final String mensagem) {
+		if(!Strings.isNullOrEmpty(chave)) {
+			mensagens.add(chave+" - "+ mensagem);			
+		} else {
+			mensagens.add(mensagem);
+		}
+	}
+	
+
+	public List<String> getMensagens() {
+		return mensagens;
+	}
+	
+	/**
+	 * Adiciona mensagem informativa <br>
+	 * Irá aparecer no log e na tela de resultados
+	 * @param msg
+	 */
+	public void info(final String msg) {
+		logger().info(msg);
+		mensagens.add("INFO: "+msg);
+	}
+	
+	/**
+	 * Adiciona mensagem de aviso <br>
+	 * Irá aparecer no log e na tela de resultados
+	 * @param msg
+	 */
+	public void warn(final String msg) {
+		logger().warn(msg);
+		mensagens.add("WARN: "+msg);
 	}
 }

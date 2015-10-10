@@ -29,10 +29,10 @@ public class CarregarUltimoDelta implements Atividade {
 	 */
 	@Override
 	public void executar(Execucao execucao) {
-		execucao.logger().info("Carregando o último delta executado no banco de dados no configurador");
+		execucao.info("Carregando o último delta executado no banco de dados no configurador");
 		
 		ControleDelta ultimoDelta = controleDeltaDAO.carregarUltimoDelta();
-		execucao.logger().info("Ultimo delta carregado: "+ultimoDelta);
+		execucao.info("Ultimo delta carregado: "+ultimoDelta);
 		configuracao.setUltimoDeltaExecutado(ultimoDelta);
 	}
 	

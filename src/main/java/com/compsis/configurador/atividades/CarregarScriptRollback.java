@@ -46,7 +46,7 @@ public class CarregarScriptRollback implements Atividade {
 						&& Pattern.compile("(\\d+\\.)?(\\d+\\.)?(\\*|\\d+)").matcher(name).matches();
 			}
 		});
-		execucao.logger().info("Encontrado "+scriptsDisponiveis.length+" scripts para rollback disponiveis");
+		execucao.info("Encontrado "+scriptsDisponiveis.length+" scripts para rollback disponiveis");
 		List<File> scripts = Arrays.asList(scriptsDisponiveis);
 		Map<String, File> scriptPorVersao = Versoes.montarMapaDeArquivosPorVersao(scripts);
 		List<String[]> versoesDisponiveis = Versoes.montarListaDeVersoes(scripts);
@@ -56,7 +56,7 @@ public class CarregarScriptRollback implements Atividade {
 		while (listIterator.hasNext()) {
 			String[] versao = (String[]) listIterator.next();
 			if( new VersaoComparator().compare(versaoAtual, versao) > 0 ) {
-				execucao.logger().info("Removendo script a versão atual. Versão atual: "
+				execucao.info("Removendo script a versão atual. Versão atual: "
 								+Arrays.toString(versaoAtual)+". Removendo script para versão "+Arrays.toString(versao));
 				scriptPorVersao.remove(Arrays.toString(versao));
 				listIterator.remove();

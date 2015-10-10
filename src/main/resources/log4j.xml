@@ -7,12 +7,7 @@
 			<param name="ConversionPattern" value="%d{dd.MM.yyyy HH:mm:ss,SSS} %5p %c{1} - %t - %m%n" />
 		</layout>
 	</appender>
-	
-	<category name="com.compsis.configurador">  
-		<priority value="INFO" />
-		<appender-ref ref="CA" />  
-	</category>
-    
+
 	<root>
 		<level value="INFO" />
 		<appender-ref ref="CA" />

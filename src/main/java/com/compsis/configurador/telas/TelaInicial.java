@@ -2,8 +2,9 @@
 package com.compsis.configurador.telas;
 
 import java.awt.EventQueue;
-import java.awt.event.MouseEvent;
-import java.awt.event.MouseListener;
+import java.awt.Font;
+import java.awt.event.WindowAdapter;
+import java.awt.event.WindowEvent;
 
 import javax.annotation.PostConstruct;
 import javax.swing.JButton;
@@ -11,7 +12,8 @@ import javax.swing.JFrame;
 import javax.swing.JTextPane;
 
 import com.compsis.configurador.Configuracao;
-import java.awt.Font;
+import com.compsis.configurador.executores.Executor;
+import com.compsis.configurador.telas.listeners.BaseMouseListener;
 
 /** 
  * DOCUMENTAÇÃO DA CLASSE <br>
@@ -30,6 +32,7 @@ public class TelaInicial {
 
 	private JFrame telaInicial;
 	private Configuracao configuracao;
+	private Executor executorTarefas;
 
 	/**
 	 * Launch the application.
@@ -56,6 +59,12 @@ public class TelaInicial {
 		telaInicial.setBounds(100, 100, 513, 341);
 		telaInicial.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		telaInicial.getContentPane().setLayout(null);
+		
+		telaInicial.addWindowListener(new WindowAdapter() {
+			public void windowClosing(WindowEvent arg0) {
+				System.exit(0);
+			}
+		});
 		
 		JButton btUpdateVersao = new JButton("Atualizar versão do sistema");
 		btUpdateVersao.setBounds(10, 11, 477, 29);
@@ -94,85 +103,16 @@ public class TelaInicial {
 		.append(configuracao.getConfigurador().getPastaNovasInfra().getAbsolutePath()).append("\n");
 		final String textoInstalarJboss = builder.toString();
 		
-		btRollbackVersao.addMouseListener(new MouseListener() {
-			@Override
-			public void mouseReleased(MouseEvent e) { }
-			
-			@Override
-			public void mousePressed(MouseEvent e) {
-				txtDescription.setText("");
-			}
-			
-			@Override
-			public void mouseExited(MouseEvent e) {
-//				txtDescription.setText("");
-			}
-			
-			@Override
-			public void mouseEntered(MouseEvent e) {
-				txtDescription.setText(textoRollback);
-			}
-			
-			@Override
-			public void mouseClicked(MouseEvent e) {
-				txtDescription.setText("clicked");
-			}
-		});
-		btUpdateVersao.addMouseListener(new MouseListener() {
-			
-			@Override
-			public void mouseReleased(MouseEvent e) {}
-			
-			@Override
-			public void mousePressed(MouseEvent e) {
-				txtDescription.setText("");
-			}
-			
-			@Override
-			public void mouseExited(MouseEvent e) {
-//				txtDescription.setText("");
-			}
-			
-			@Override
-			public void mouseEntered(MouseEvent e) {
-				txtDescription.setText(textoUpdate);
-			}
-			
-			@Override
-			public void mouseClicked(MouseEvent e) {
-				txtDescription.setText("clicked");
-			}
-		});
 		
-		btInstalarJboss.addMouseListener(new MouseListener() {
-			
-			@Override
-			public void mouseReleased(MouseEvent e) {
-				// TODO Auto-generated method stub
-				
-			}
-			
-			@Override
-			public void mousePressed(MouseEvent e) {
-				txtDescription.setText("");
-			}
-			
-			@Override
-			public void mouseExited(MouseEvent e) {
-				// TODO Auto-generated method stub
-				
-			}
-			
-			@Override
-			public void mouseEntered(MouseEvent e) {
-				txtDescription.setText(textoInstalarJboss);
-			}
-			
-			@Override
-			public void mouseClicked(MouseEvent e) {
-				txtDescription.setText("clicked");
-			}
-		});
+		btRollbackVersao.addMouseListener(new BaseMouseListener().setHelp(textoRollback).setObservacoes(txtDescription)
+				.setTarefa("EXECUTAR_ROLLBACK_VERSAO").setExecutorTarefas(executorTarefas));
+		
+		
+		btUpdateVersao.addMouseListener(new BaseMouseListener().setHelp(textoUpdate).setObservacoes(txtDescription)
+				.setTarefa("EXECUTAR_UPDATE_VERSAO").setExecutorTarefas(executorTarefas));
+		
+		btInstalarJboss.addMouseListener(new BaseMouseListener().setHelp(textoInstalarJboss).setObservacoes(txtDescription)
+				.setTarefa("EXECUTAR_INSTALACAO_INFRA_JBOSS").setExecutorTarefas(executorTarefas));
 		
 		telaInicial.setVisible(true);
 	}
@@ -184,5 +124,14 @@ public class TelaInicial {
 	 */
 	public void setConfiguracao(Configuracao configuracao) {
 		this.configuracao = configuracao;
+	}
+	
+	/**
+	 * Valor de executorTarefas atribuído a executorTarefas
+	 *
+	 * @param executorTarefas Atributo da Classe
+	 */
+	public void setExecutorTarefas(Executor executorTarefas) {
+		this.executorTarefas = executorTarefas;
 	}
 }

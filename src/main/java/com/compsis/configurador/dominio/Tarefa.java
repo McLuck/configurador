@@ -1,11 +1,3 @@
-/*
- * COMPSIS – Computadores e Sistemas Ind. e Com. LTDA<br>
- * Produto ${product_name} - ${product_description}<br>
- *
- * Data de Criação: 03/10/2015<br>
- * <br>
- * Todos os direitos reservados.
- */
 
 package com.compsis.configurador.dominio;
 

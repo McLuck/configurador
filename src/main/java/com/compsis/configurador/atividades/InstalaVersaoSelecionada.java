@@ -33,7 +33,7 @@ public class InstalaVersaoSelecionada implements Atividade {
 	 */
 	@Override
 	public void executar(Execucao execucao) {
-		execucao.logger().info("Instalando versões selecionada");
+		execucao.info("Instalando versões selecionada");
 		List<String[]> versoesDisponiveis = execucao.obterDaSessao(Constantes.VERSOES_PARA_INSTALAR.toString());
 		Map<String, File> scriptPorVersao = execucao.obterDaSessao(Constantes.MAPA_SISTEMA_PARA_INSTALAR.toString());
 		for (String[] versao : versoesDisponiveis) {
@@ -43,7 +43,7 @@ public class InstalaVersaoSelecionada implements Atividade {
 				execucao.logger().error("Instalação da versão "+labelVersao+" não foi realizada. Arquivo não encontrado para a versão.");
 			} else {
 				File destino = new File(configuracao.getConfigurador().getPastaSistema(), arquivoVersao.getName());
-				execucao.logger().info("Instalando versão "+labelVersao+". Arquivo original "
+				execucao.info("Instalando versão "+labelVersao+". Arquivo original "
 										+arquivoVersao.getAbsolutePath()+" Arquivo destino "+destino.getAbsolutePath());
 				try {
 					Files.copy(arquivoVersao, destino);
