@@ -7,7 +7,7 @@ import com.compsis.configurador.Configuracao;
 import com.compsis.configurador.Constantes;
 import com.compsis.configurador.dominio.Atividade;
 import com.compsis.configurador.dominio.Execucao;
-import com.compsis.configurador.dominio.usuario.InstalacaoJboss;
+import com.compsis.configurador.dominio.usuario.InstalacaoJboss6SA;
 import com.compsis.configurador.executores.ExecutorExterno;
 import com.compsis.configurador.util.FilesUtil;
 
@@ -48,7 +48,7 @@ public class InstalarJboss implements Atividade {
 			new RuntimeException("Arquivo esperado para realizar instalação da infra não disponível: " + infraJboss.getAbsolutePath());
 		}
 		
-		InstalacaoJboss instalacao = execucao.obterDaSessao(Constantes.INSTALACAO_JBOSS_INTERACAO_USUARIO.toString());
+		InstalacaoJboss6SA instalacao = execucao.obterDaSessao(Constantes.INSTALACAO_JBOSS6_SA_INTERACAO_USUARIO.toString());
 		
 		if(pastaSicat.exists()) {
 			if(instalacao.isSubstituirInfraOriginal()) {

@@ -152,4 +152,14 @@ public class Execucao {
 		logger().warn(msg);
 		mensagens.add("WARN: "+msg);
 	}
+	
+	/**
+	 * Adiciona mensagem de erro <br>
+	 * Irá aparecer no log e na tela de resultados
+	 * @param msg
+	 */
+	public void error(final String msg) {
+		logger().error(msg);
+		mensagens.add("ERROR: "+msg);
+	}
 }

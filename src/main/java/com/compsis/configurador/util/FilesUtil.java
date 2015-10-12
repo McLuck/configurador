@@ -5,7 +5,11 @@ import java.io.BufferedOutputStream;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
+import java.io.FilenameFilter;
 import java.io.IOException;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
 import java.util.zip.ZipEntry;
 import java.util.zip.ZipInputStream;
 import java.util.zip.ZipOutputStream;
@@ -163,6 +167,36 @@ public final class FilesUtil {
             bos.write(bytesIn, 0, read);
         }
         bos.close();
+    }
+    
+    /**
+     * Busca arquivos com o padrão de nomes solicitado na pasta solicitada
+     * @param pasta
+     * @param padraoNome
+     * @return
+     */
+    public static List<File> buscarArquivos(File pasta, final String padraoNome) {
+    	File[] files = pasta.listFiles(new FilenameFilter() {
+			public boolean accept(File dir, String name) {
+				return name.toLowerCase().contains(padraoNome.toLowerCase());
+			} });
+    	return new ArrayList<File>(Arrays.asList(files));
+    }
+    
+    /**
+     * Espera que tenha somente um arquivo com o nome especificado no diretorio
+     * solicitado. 
+     * Caso tenha mais que um, somente o primeiro será retornado
+     * @param pasta
+     * @param padraoNome
+     * @return
+     */
+    public static File obterArquivoNaPasta(File pasta, String padraoNome) {
+    	List<File> arquivos = buscarArquivos(pasta, padraoNome);
+    	for (File file : arquivos) {
+			return file;
+		}
+    	return null;
     }
     
 	public static void main(String[] args) {

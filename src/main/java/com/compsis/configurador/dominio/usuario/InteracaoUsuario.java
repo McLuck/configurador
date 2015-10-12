@@ -1,5 +1,7 @@
 package com.compsis.configurador.dominio.usuario;
 
+import java.io.Serializable;
+
 /** 
  * DOCUMENTAÇÃO DA CLASSE <br>
  * ---------------------- <br>
@@ -13,7 +15,8 @@ package com.compsis.configurador.dominio.usuario;
  * LISTA DE CLASSES INTERNAS: <br>
  */
 
-public class InteracaoUsuario {
+@SuppressWarnings("serial")
+public class InteracaoUsuario implements Serializable {
 	private String identificacaoUsuario;
 	private OperacaoUsuario operacao;
 	/**

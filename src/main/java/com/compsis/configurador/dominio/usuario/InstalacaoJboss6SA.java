@@ -14,7 +14,8 @@ package com.compsis.configurador.dominio.usuario;
  * LISTA DE CLASSES INTERNAS: <br>
  */
 
-public class InstalacaoJboss extends InteracaoUsuario {
+@SuppressWarnings("serial")
+public class InstalacaoJboss6SA extends InteracaoUsuario {
 	private String nomeServico;
 	private boolean substituirInfraOriginal;
 	private boolean realizarBkp;
@@ -30,7 +31,7 @@ public class InstalacaoJboss extends InteracaoUsuario {
 	/** 
 	 * Construtor padrão da classe
 	 */
-	public InstalacaoJboss() {
+	public InstalacaoJboss6SA() {
 		setOperacao(OperacaoUsuario.INSTALACAO_JBOSS);
 	}
 	

@@ -2,6 +2,7 @@
 package com.compsis.configurador.telas;
 
 import java.awt.Dialog.ModalityType;
+import java.awt.TrayIcon.MessageType;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.WindowAdapter;
@@ -15,6 +16,7 @@ import javax.swing.JComboBox;
 import javax.swing.JDialog;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
+import javax.swing.JOptionPane;
 import javax.swing.JTextArea;
 import javax.swing.JTextField;
 import javax.swing.event.CaretEvent;
@@ -25,8 +27,9 @@ import com.compsis.configurador.Constantes;
 import com.compsis.configurador.dominio.AcaoExecucao;
 import com.compsis.configurador.dominio.Atividade;
 import com.compsis.configurador.dominio.Execucao;
-import com.compsis.configurador.dominio.usuario.InstalacaoJboss;
+import com.compsis.configurador.dominio.usuario.InstalacaoJboss6SA;
 import com.google.common.base.Strings;
+import com.thoughtworks.xstream.XStream;
 
 /** 
  * DOCUMENTAÇÃO DA CLASSE <br>
@@ -41,10 +44,10 @@ import com.google.common.base.Strings;
  * LISTA DE CLASSES INTERNAS: <br>
  */
 
-public class TelaInstalacaoInfraJboss implements Atividade {
+public class TelaInstalacaoInfraJboss6SA implements Atividade {
 	
 	private JDialog frame;
-	private InstalacaoJboss instalacaoJboss;
+	private InstalacaoJboss6SA instalacaoJboss;
 	private Configuracao configuracao;
 	private JTextField txtServico;
 	private JTextField txtDiretorioInstalacao;
@@ -66,7 +69,7 @@ public class TelaInstalacaoInfraJboss implements Atividade {
 	 * SOMENTE PARA TESTE
 	 */
 	public static void main(String[] args) {
-		TelaInstalacaoInfraJboss window = new TelaInstalacaoInfraJboss();
+		TelaInstalacaoInfraJboss6SA window = new TelaInstalacaoInfraJboss6SA();
 		window.exibir();
 	}
 	
@@ -78,7 +81,7 @@ public class TelaInstalacaoInfraJboss implements Atividade {
 	/**
 	 * Create the application.
 	 */
-	public TelaInstalacaoInfraJboss() {
+	public TelaInstalacaoInfraJboss6SA() {
 		initialize();
 	}
 
@@ -132,7 +135,7 @@ public class TelaInstalacaoInfraJboss implements Atividade {
 		frame.getContentPane().add(chkBkpInfraAtual);
 		
 		chSubstituirInfraAtual = new JCheckBox("Substituir infra atual");
-		chSubstituirInfraAtual.setBounds(10, 128, 349, 23);
+		chSubstituirInfraAtual.setBounds(10, 128, 252, 23);
 		frame.getContentPane().add(chSubstituirInfraAtual);
 		
 		JButton btnCancelarInstalao = new JButton("Cancelar Instalação");
@@ -239,12 +242,36 @@ public class TelaInstalacaoInfraJboss implements Atividade {
 		
 		cbVersaoBD = new JComboBox();
 		cbVersaoBD.setModel(new DefaultComboBoxModel(new String[] {"11.2.0.3", "11.2.0.4", "12", "2005", "2008", "2012"}));
-		cbVersaoBD.setBounds(199, 171, 170, 20);
+		cbVersaoBD.setBounds(190, 171, 124, 20);
 		frame.getContentPane().add(cbVersaoBD);
 		
 		lblVerso = new JLabel("Versão:");
-		lblVerso.setBounds(199, 157, 170, 14);
+		lblVerso.setBounds(190, 158, 65, 14);
 		frame.getContentPane().add(lblVerso);
+		
+		JButton btAjudaVersao = new JButton("?");
+		btAjudaVersao.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				boolean bancoSelecionado = false;
+				StringBuffer buffer = new StringBuffer("Para descobrir a versão correta do banco de dados, utilize o comandos a seguir: \n\n");
+				String nomeBanco = String.valueOf(cbBanco.getSelectedItem());
+				if(nomeBanco.toLowerCase().contains("oracle") ) {
+					bancoSelecionado = true;
+					buffer.append("SELECT * FROM V$VERSION;");
+				} else if(nomeBanco.toLowerCase().contains( "ms sql") ) {
+					bancoSelecionado = true;
+					buffer.append("SELECT @@VERSION;");					
+				}
+				if(bancoSelecionado) {
+					new TelaAjudaComponente("Ajuda para descobrir versão do banco de dados", buffer.toString());
+				} else {
+					JOptionPane.showMessageDialog(null, "Selecione o banco de dados para obter ajuda de como descobrir a versão apropriada", 
+							"Nenhuma versão selecionada", MessageType.ERROR.ordinal());
+				}
+			}
+		});
+		btAjudaVersao.setBounds(316, 170, 53, 23);
+		frame.getContentPane().add(btAjudaVersao);
 	}
 
 	/** 
@@ -253,13 +280,20 @@ public class TelaInstalacaoInfraJboss implements Atividade {
 	@Override
 	public void executar(Execucao execucao) {
 		this.execucao = execucao;
-		instalacaoJboss = execucao.obterDaSessao(Constantes.INSTALACAO_JBOSS_INTERACAO_USUARIO.toString());
+		instalacaoJboss = execucao.obterDaSessao(Constantes.INSTALACAO_JBOSS6_SA_INTERACAO_USUARIO.toString());
 		if(instalacaoJboss == null) {
-			instalacaoJboss = new InstalacaoJboss();
+			XStream xStream = new XStream();
+			File jboss6XML = new File(configuracao.getConfigurador().getPastaRaizConfigurador(), "jboss6.xml");
+			if(jboss6XML.exists()) {
+				instalacaoJboss = (InstalacaoJboss6SA) xStream.fromXML(jboss6XML);				
+				execucao.adicionarNaSessao(Constantes.INSTALACAO_JBOSS6_SA_INTERACAO_USUARIO.toString()	, instalacaoJboss);
+			}
+		}
+		if(instalacaoJboss == null) {
+			instalacaoJboss = new InstalacaoJboss6SA();
 			instalacaoJboss.setDiretorioInstalacao(configuracao.getConfigurador().getPastaRaizInfra().getAbsolutePath());
 			instalacaoJboss.setNomeServico(configuracao.getConfigurador().getSistema());
-
-			execucao.adicionarNaSessao(Constantes.INSTALACAO_JBOSS_INTERACAO_USUARIO.toString()	, instalacaoJboss);
+			execucao.adicionarNaSessao(Constantes.INSTALACAO_JBOSS6_SA_INTERACAO_USUARIO.toString()	, instalacaoJboss);
 		}
 		alterarValoresComponentes();
 		
@@ -276,6 +310,7 @@ public class TelaInstalacaoInfraJboss implements Atividade {
 		chkBkpInfraAtual.setSelected(instalacaoJboss.isRealizarBkp());
 		chSubstituirInfraAtual.setSelected(instalacaoJboss.isSubstituirInfraOriginal());
 		cbBanco.setSelectedItem(instalacaoJboss.getNomeBD());
+		cbVersaoBD.setSelectedItem(instalacaoJboss.getVersaoBD());
 		String instanciaBD = instalacaoJboss.getInstanciaBD();
 		if(Strings.isNullOrEmpty(instanciaBD)) {
 			instanciaBD = "SGAP";
@@ -294,6 +329,7 @@ public class TelaInstalacaoInfraJboss implements Atividade {
 		instalacaoJboss.setUrlBD(taURL.getText());
 		instalacaoJboss.setNomeBD(cbBanco.getSelectedItem().toString());
 		instalacaoJboss.setInstanciaBD(txtInstancia.getText());
+		instalacaoJboss.setVersaoBD(String.valueOf(cbVersaoBD.getSelectedItem()));
 	}
 	
 	private void montarUrlBD() {

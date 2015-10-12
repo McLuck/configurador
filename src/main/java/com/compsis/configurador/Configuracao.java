@@ -44,7 +44,7 @@ public class Configuracao {
 		}
 		String sicatHome = System.getenv("SICAT_HOME");
 		if(Strings.isNullOrEmpty(sicatHome)) {
-			sicatHome = "D:\\sicat";
+			sicatHome = "D:\\sicat\\app";
 		}
 		File sicatHomeFile = new File(sicatHome);
 		if(!sicatHomeFile.exists()) {
@@ -93,7 +93,7 @@ public class Configuracao {
 			configurador.setPastaNovasInfra(pastaNovasInfras);
 			configurador.setPastaRaizConfigurador(homeConfigurador);
 			configurador.setPastaRaizInfra(sicatHomeFile);
-			File pastaSistema = new File( new File ( new File( new File( new File(sicatHomeFile, "app") , "server"), "sgap"), "deploy"), "sgap-sa");
+			File pastaSistema = new File( new File ( new File( new File( sicatHomeFile , "server"), "sgap"), "deploy"), "sgap-sa");
 			configurador.setPastaSistema(pastaSistema);
 			configurador.setTipoArquivoSistema("WAR,EAR");
 			configurador.setPastaAtualizacaoVersao(pastaVersao);

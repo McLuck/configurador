@@ -43,17 +43,21 @@ http://www.springframework.org/schema/util/spring-util.xsd">
 	<bean id="tarefaInfraJboss" class="com.compsis.configurador.dominio.Tarefa" scope="prototype">
 		<constructor-arg>
 			<util:list>
-				<ref bean="telaInstalacaoInfraJboss" />
-				<ref bean="logarInstalacaoJboss" />
+				<ref bean="telaInstalacaoInfraJboss6SA" />
+				<ref bean="salvarInstalacaoJboss6SA" />
 				<ref bean="pararServico" />
 				<ref bean="instalarJboss" />
+				<ref bean="configurarBDJbossSA6" />
 			</util:list>
 		</constructor-arg>
 		<property name="nome" value="EXECUTAR_INSTALACAO_INFRA_JBOSS" />
 	</bean>
 	
 	<!-- 	Atividades -->
-	<bean id="telaInstalacaoInfraJboss" class="com.compsis.configurador.telas.TelaInstalacaoInfraJboss" scope="prototype" >
+	<bean id="telaInstalacaoInfraJboss6SA" class="com.compsis.configurador.telas.TelaInstalacaoInfraJboss6SA" scope="prototype" >
+		<property name="configuracao" ref="configuracao" />
+	</bean>
+	<bean id="configurarBDJbossSA6" class="com.compsis.configurador.atividades.ConfigurarBDJbossSA6" scope="prototype" >
 		<property name="configuracao" ref="configuracao" />
 	</bean>
 	<bean id="iniciarServico" class="com.compsis.configurador.atividades.IniciarServico">
@@ -93,7 +97,9 @@ http://www.springframework.org/schema/util/spring-util.xsd">
 		<property name="configuracao" ref="configuracao" />
 	</bean>
 	<bean id="renomearLogsJboss" class="com.compsis.configurador.atividades.RenomearLogsJboss" />
-	<bean id="logarInstalacaoJboss" class="com.compsis.configurador.atividades.LogarInstalacaoJboss" />
+	<bean id="salvarInstalacaoJboss6SA" class="com.compsis.configurador.atividades.SalvarInstalacaoJboss6SA">
+		<property name="configuracao" ref="configuracao" />
+	</bean>
 	<bean id="carregarUltimoDelta" class="com.compsis.configurador.atividades.CarregarUltimoDelta">
 		<property name="configuracao" ref="configuracao" />
 		<property name="controleDeltaDAO" ref="controleDeltaDAO" />

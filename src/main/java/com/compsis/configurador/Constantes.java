@@ -6,7 +6,6 @@ import java.util.HashMap;
 
 import com.compsis.configurador.dominio.ControleDelta;
 import com.compsis.configurador.dominio.usuario.AtualizacaoVersao;
-import com.compsis.configurador.dominio.usuario.InstalacaoJboss;
 import com.compsis.configurador.dominio.usuario.InteracaoUsuario;
 
 /** 
@@ -122,7 +121,7 @@ public enum Constantes {
 	 * Referencia instancia de {@link InstalacaoJboss}, subclasse de {@link InteracaoUsuario}
 	 * utilizada para coletar dados do usuario nas interfaces (TO's)
 	 */
-	INSTALACAO_JBOSS_INTERACAO_USUARIO, 
+	INSTALACAO_JBOSS6_SA_INTERACAO_USUARIO, 
 	/**
 	 * Referencia {@link String} representando nome do arquivo zip contendo o conteúdo
 	 * da infra jboss <br>
