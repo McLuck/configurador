@@ -1,6 +1,8 @@
 
 package com.compsis.configurador.executores;
 
+import com.compsis.configurador.dominio.Execucao;
+
 /** 
  * DOCUMENTAÇÃO DA CLASSE <br>
  * ---------------------- <br>
@@ -19,13 +21,13 @@ public interface ExecutorSO extends Executor {
 	 * Inicia serviço no sistema operacional
 	 * @param nomeServico
 	 */
-	void iniciarServico(final String nomeServico);
+	Execucao iniciarServico(final String nomeServico);
 	
 	/**
 	 * Parar serviço no sistema operacional
 	 * @param nomeServico
 	 */
-	void pararServico(final String nomeServico);
+	Execucao pararServico(final String nomeServico);
 	
 	/**
 	 * Especifica o sistema operacional do executor

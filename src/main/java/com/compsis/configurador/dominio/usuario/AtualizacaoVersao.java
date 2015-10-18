@@ -14,12 +14,23 @@ package com.compsis.configurador.dominio.usuario;
  * LISTA DE CLASSES INTERNAS: <br>
  */
 
+@SuppressWarnings("serial")
 public class AtualizacaoVersao extends InteracaoUsuario {
 	private boolean apagarPastaTemp;
 	private boolean apagarPastaData;
 	private boolean apagarPastaWork;
 	private boolean apagarPastaLog;
 	private boolean renomearLogs;
+	private boolean realizarBackup;
+	private String versaoSelecionada;
+	
+	/** 
+	 * Construtor padrão da classe
+	 */
+	public AtualizacaoVersao() {
+		setOperacao(OperacaoUsuario.ATUALIZAR_VERSAO);
+	}
+	
 	/**
 	 * Método de recuperação do campo apagarPastaTemp
 	 *
@@ -99,5 +110,69 @@ public class AtualizacaoVersao extends InteracaoUsuario {
 	 */
 	public void setRenomearLogs(boolean renomearLogs) {
 		this.renomearLogs = renomearLogs;
+	}
+	
+	/**
+	 * Valor de versaoSelecionada atribuído a versaoSelecionada
+	 *
+	 * @param versaoSelecionada Atributo da Classe
+	 */
+	public void setVersaoSelecionada(String versaoSelecionada) {
+		this.versaoSelecionada = versaoSelecionada;
+	}
+	
+	/**
+	 * Método de recuperação do campo versaoSelecionada
+	 *
+	 * @return valor do campo versaoSelecionada
+	 */
+	public String getVersaoSelecionada() {
+		return versaoSelecionada;
+	}
+	
+	/**
+	 * Valor de realizarBackup atribuído a realizarBackup
+	 *
+	 * @param realizarBackup Atributo da Classe
+	 */
+	public void setRealizarBackup(boolean realizarBackup) {
+		this.realizarBackup = realizarBackup;
+	}
+	
+	/**
+	 * Método de recuperação do campo realizarBackup
+	 *
+	 * @return valor do campo realizarBackup
+	 */
+	public boolean isRealizarBackup() {
+		return realizarBackup;
+	}
+
+	/** 
+	 * @see java.lang.Object#toString()
+	 */
+	@Override
+	public String toString() {
+		StringBuilder builder = new StringBuilder();
+		builder.append("AtualizacaoVersao [apagarPastaTemp=");
+		builder.append(apagarPastaTemp);
+		builder.append(", apagarPastaData=");
+		builder.append(apagarPastaData);
+		builder.append(", apagarPastaWork=");
+		builder.append(apagarPastaWork);
+		builder.append(", apagarPastaLog=");
+		builder.append(apagarPastaLog);
+		builder.append(", renomearLogs=");
+		builder.append(renomearLogs);
+		builder.append(", realizarBackup=");
+		builder.append(realizarBackup);
+		builder.append(", versaoSelecionada=");
+		builder.append(versaoSelecionada);
+		builder.append(", getIdentificacaoUsuario()=");
+		builder.append(getIdentificacaoUsuario());
+		builder.append(", getOperacao()=");
+		builder.append(getOperacao());
+		builder.append("]");
+		return builder.toString();
 	}
 }

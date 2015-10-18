@@ -10,6 +10,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import com.compsis.configurador.Configuracao;
+import com.compsis.configurador.Constantes;
 import com.compsis.configurador.dominio.Execucao;
 
 /** 
@@ -43,8 +44,13 @@ public class ExecutorWindows implements ExecutorSO {
 	
 	public Execucao executar(final String comando) {
 		LOGGER.info("Executando comando: "+comando);
+		int respostaDoPrograma = 0;
 		try {
-			Runtime.getRuntime().exec(comando);
+			Process processo = Runtime.getRuntime().exec(comando);
+			respostaDoPrograma = processo.waitFor();
+			
+		} catch (InterruptedException e) {
+			throw new RuntimeException(e);			
 		} catch (IOException e) {
 			throw new RuntimeException(e);
 		}
@@ -65,7 +71,9 @@ public class ExecutorWindows implements ExecutorSO {
 //			throw new RuntimeException(e);
 //		}
 //
-		return null;
+		Execucao execucao = new Execucao(null, LOGGER);
+		execucao.adicionarNaSessao(Constantes.RETORNO_PROGRAMA.toString(), respostaDoPrograma);
+		return execucao;
 	}
 	
 	/**
@@ -81,16 +89,16 @@ public class ExecutorWindows implements ExecutorSO {
 	 * @see com.compsis.configurador.executores.ExecutorSO#iniciarServico(java.lang.String)
 	 */
 	@Override
-	public void iniciarServico(String nomeServico) {
-		executar("net start "+nomeServico);
+	public Execucao iniciarServico(String nomeServico) {
+		return executar("net start "+nomeServico);
 	}
 
 	/** 
 	 * @see com.compsis.configurador.executores.ExecutorSO#pararServico(java.lang.String)
 	 */
 	@Override
-	public void pararServico(String nomeServico) {
-		executar("net stop "+nomeServico);
+	public Execucao pararServico(String nomeServico) {
+		return executar("net stop "+nomeServico);
 	}
 
 	/** 

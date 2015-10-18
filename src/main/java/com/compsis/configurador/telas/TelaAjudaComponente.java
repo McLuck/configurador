@@ -52,6 +52,8 @@ public class TelaAjudaComponente extends JDialog {
 		getContentPane().setLayout(null);
 		
 		JTextArea textArea = new JTextArea();
+		textArea.setLineWrap(true);
+		textArea.setWrapStyleWord(true);
 		textArea.setEditable(false);
 		textArea.setBounds(10, 11, 674, 254);
 		textArea.setText(textoAjuda);

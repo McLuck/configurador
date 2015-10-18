@@ -62,7 +62,7 @@ public class ControleDeltaDAO {
 	 */
 	public ControleDelta carregarUltimoDelta() {
 		
-		String sql = "SELECT IDDELTA, NOMEARQUIVO, OBSERVACAO, DATAINSERCAO FROM CONTROLEDELTAS WHERE IDDELTA = (SELECT MAX(IDDELTA) FROM CONTROLEDELTAS);";
+		String sql = "SELECT IDDELTA, NOMEARQUIVO, OBSERVACAO, DATAINSERCAO FROM CONTROLEDELTAS WHERE IDDELTA = (SELECT MAX(IDDELTA) FROM CONTROLEDELTAS)";
 		
 		Connection connection = connectionWrapper.getConnection();
 		PreparedStatement statement = null;

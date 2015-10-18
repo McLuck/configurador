@@ -63,17 +63,17 @@ public class ExecutorExterno implements ApplicationContextAware {
 	/** 
 	 * @see com.compsis.configurador.executores.ExecutorSO#iniciarServico(java.lang.String)
 	 */
-	public void iniciarServico(String nomeServico) {
+	public Execucao iniciarServico(String nomeServico) {
 		ExecutorSO executorSO = findExecutorSO();
-		executorSO.iniciarServico(nomeServico);
+		return executorSO.iniciarServico(nomeServico);
 	}
 
 	/** 
 	 * @see com.compsis.configurador.executores.ExecutorSO#pararServico(java.lang.String)
 	 */
-	public void pararServico(String nomeServico) {
+	public Execucao pararServico(String nomeServico) {
 		ExecutorSO executorSO = findExecutorSO();
-		executorSO.pararServico(nomeServico);
+		return executorSO.pararServico(nomeServico);
 	}
 
 	/** 

@@ -32,9 +32,9 @@ public class FazerBackupVersaoAtual implements Atividade {
 	public void executar(Execucao execucao) {
 		execucao.info("Iniciando backup das versões atuais");
 		File[] arquivosEncontrados = configuracao.arquivosDoSistema();
-		
+		String prefixo = String.valueOf(System.currentTimeMillis()).substring(7)+"_";
 		for (File arquivoParaBackup : arquivosEncontrados) {
-			File arquivoBkp = new File(configuracao.getConfigurador().getPastaBackup(), arquivoParaBackup.getName());
+			File arquivoBkp = new File(configuracao.getConfigurador().getPastaBackup(), prefixo + arquivoParaBackup.getName());
 			execucao.info("Realizando backup de "+arquivoParaBackup.getAbsolutePath()+" para "+arquivoBkp.getAbsolutePath());
 			try {
 				Files.copy(arquivoParaBackup, arquivoBkp);

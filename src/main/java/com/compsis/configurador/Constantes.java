@@ -126,5 +126,9 @@ public enum Constantes {
 	 * Referencia {@link String} representando nome do arquivo zip contendo o conteúdo
 	 * da infra jboss <br>
 	 */
-	INFRA_JBOSS
+	INFRA_JBOSS, 
+	/**
+	 * Referencia o retorno de chamada externa de programas no sistema operacional
+	 */
+	RETORNO_PROGRAMA
 }

@@ -17,6 +17,8 @@ import javax.naming.InitialContext;
 import javax.naming.NamingException;
 import javax.sql.DataSource;
 
+import org.jnp.interfaces.NamingContextFactory;
+
 import com.compsis.configurador.Configuracao;
 import com.google.common.base.Strings;
 
@@ -66,9 +68,10 @@ public class ConnectionWrapper {
 				hostDataSource = configuracao.getConfigurador().getHostDataSource();
 			}
 			Hashtable env = new Hashtable();
-			env.put(Context.INITIAL_CONTEXT_FACTORY, "org.jnp.interfaces.NamingContextFactory");
-			env.put(Context.PROVIDER_URL, hostDataSource);
+			env.put(Context.INITIAL_CONTEXT_FACTORY, NamingContextFactory.class.getName() );
+			env.put(Context.PROVIDER_URL, "jnp://" + hostDataSource + ":1099");
 			env.put(Context.URL_PKG_PREFIXES, "org.jboss.naming:org.jnp.interfaces");
+//			env.put(Context.URL_PKG_PREFIXES, "org.jboss.naming.client");
 			ctx = new InitialContext(env);
 			
 			

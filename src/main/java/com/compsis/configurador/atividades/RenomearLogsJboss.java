@@ -47,10 +47,10 @@ public class RenomearLogsJboss implements Atividade {
 						return name.toLowerCase().endsWith(".log");
 					}
 				});
-				
+				String prefixo = String.valueOf(System.currentTimeMillis()).substring(7) + "_";
 				for (File log : logs) {
 					try {
-						Files.move(log, new File(pastasRenomeados, log.getName()));
+						Files.move(log, new File(pastasRenomeados, prefixo + log.getName()));
 					} catch (IOException e) {
 						execucao.logger().error(e.getMessage());
 						execucao.logger().debug(e.getMessage(), e);
@@ -58,5 +58,9 @@ public class RenomearLogsJboss implements Atividade {
 				}
 			}
 		}
+	}
+	
+	public static void main(String[] args) {
+		System.out.println(System.currentTimeMillis());
 	}
 }
