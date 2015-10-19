@@ -123,7 +123,7 @@ public class TelaUpdateVersao extends JDialog implements Atividade {
 		setDefaultCloseOperation(JDialog.DISPOSE_ON_CLOSE);
 		setModalityType(ModalityType.APPLICATION_MODAL);
 		setTitle("Configuração para atualização da versão");
-		setBounds(100, 100, 326, 323);
+		setBounds(100, 100, 347, 323);
 		getContentPane().setLayout(null);
 		
 		addWindowListener(new WindowAdapter() {
@@ -138,11 +138,11 @@ public class TelaUpdateVersao extends JDialog implements Atividade {
 		getContentPane().add(lblVersesDisponveisPara);
 		
 		cbVeroesDisponiveis = new JComboBox();
-		cbVeroesDisponiveis.setBounds(10, 26, 232, 20);
+		cbVeroesDisponiveis.setBounds(10, 26, 258, 20);
 		getContentPane().add(cbVeroesDisponiveis);
 		
 		btHelpVersoesDisponiveis = new JButton("?");
-		btHelpVersoesDisponiveis.setBounds(252, 25, 53, 23);
+		btHelpVersoesDisponiveis.setBounds(278, 26, 53, 23);
 		getContentPane().add(btHelpVersoesDisponiveis);
 		
 		chckBxBkpVersaoAnterior = new JCheckBox("Fazer backup da versão anterior");
@@ -166,23 +166,23 @@ public class TelaUpdateVersao extends JDialog implements Atividade {
 		getContentPane().add(chckbxRenomearLogs);
 		
 		btHelpRenomearLogs = new JButton("?");
-		btHelpRenomearLogs.setBounds(252, 53, 53, 23);
+		btHelpRenomearLogs.setBounds(278, 54, 53, 23);
 		getContentPane().add(btHelpRenomearLogs);
 		
 		btHelpBkpVersaoAnterior = new JButton("?");
-		btHelpBkpVersaoAnterior.setBounds(252, 79, 53, 23);
+		btHelpBkpVersaoAnterior.setBounds(278, 80, 53, 23);
 		getContentPane().add(btHelpBkpVersaoAnterior);
 		
 		btHelpApagarTmp = new JButton("?");
-		btHelpApagarTmp.setBounds(252, 105, 53, 23);
+		btHelpApagarTmp.setBounds(278, 106, 53, 23);
 		getContentPane().add(btHelpApagarTmp);
 		
 		btHelpApagarWork = new JButton("?");
-		btHelpApagarWork.setBounds(252, 131, 53, 23);
+		btHelpApagarWork.setBounds(278, 132, 53, 23);
 		getContentPane().add(btHelpApagarWork);
 		
 		btHelpApagarPastalogs = new JButton("?");
-		btHelpApagarPastalogs.setBounds(252, 157, 53, 23);
+		btHelpApagarPastalogs.setBounds(278, 158, 53, 23);
 		getContentPane().add(btHelpApagarPastalogs);
 		
 		btCancelarAtualizacao = new JButton("Cancelar Instalação");
@@ -203,7 +203,7 @@ public class TelaUpdateVersao extends JDialog implements Atividade {
 				execucao.logger().info("Dados do usuário: " + atualizacaoVersao.toString());
 			}
 		});
-		btProsseguirAtualizacao.setBounds(161, 238, 144, 23);
+		btProsseguirAtualizacao.setBounds(161, 238, 170, 23);
 		getContentPane().add(btProsseguirAtualizacao);
 		
 		chckbxApagarPastaData = new JCheckBox("Apagar pasta de mensagens");
@@ -211,7 +211,7 @@ public class TelaUpdateVersao extends JDialog implements Atividade {
 		getContentPane().add(chckbxApagarPastaData);
 		
 		btHelpApagarPastaMensagens = new JButton("?");
-		btHelpApagarPastaMensagens.setBounds(252, 185, 53, 23);
+		btHelpApagarPastaMensagens.setBounds(278, 186, 53, 23);
 		getContentPane().add(btHelpApagarPastaMensagens);
 	}
 
@@ -230,12 +230,18 @@ public class TelaUpdateVersao extends JDialog implements Atividade {
 			execucao.adicionarNaSessao(Constantes.ATUALIZACAO_VERSAO_INTERACAO_USUARIO.toString(), atualizacaoVersao);
 		}
 		List<String[]> listaDeVersoes = execucao.obterDaSessao(Constantes.VERSOES_SISTEMA_ATUALIZACOES_DISPONIVEIS.toString());
-		if(listaDeVersoes!=null && !listaDeVersoes.isEmpty()) {
-			alterarValoresComponentes();
-			setVisible(true);			
-		} else {
+		List<String[]> scriptsDisponiveis = execucao.obterDaSessao(Constantes.VERSOES_SCRIPTS_ATUALIZAO_DISPONIVEIS.toString());
+		if(listaDeVersoes==null || listaDeVersoes.isEmpty()) {
 			execucao.proximaAcaoExecucao(AcaoExecucao.PARAR_EXECUCAO);
 			execucao.error("Nenhuma versão disponível para atualização!");
+		} 
+		if(scriptsDisponiveis==null || scriptsDisponiveis.isEmpty()) {
+			execucao.proximaAcaoExecucao(AcaoExecucao.PARAR_EXECUCAO);
+			execucao.error("Nenhum script disponível para atualização!");
+		} 
+		if(AcaoExecucao.CONTINUAR_EXECUCAO.equals(execucao.getAcaoExecucao())) {
+			alterarValoresComponentes();
+			setVisible(true);			
 		}
 	}
 	

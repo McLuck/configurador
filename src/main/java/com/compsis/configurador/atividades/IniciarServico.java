@@ -1,8 +1,11 @@
 
 package com.compsis.configurador.atividades;
 
+import java.sql.Connection;
+
 import com.compsis.configurador.Configuracao;
 import com.compsis.configurador.Constantes;
+import com.compsis.configurador.dao.ConnectionWrapper;
 import com.compsis.configurador.dominio.Atividade;
 import com.compsis.configurador.dominio.Execucao;
 import com.compsis.configurador.executores.ExecutorExterno;
@@ -23,8 +26,8 @@ import com.compsis.configurador.executores.ExecutorExterno;
 public class IniciarServico implements Atividade {
 	private ExecutorExterno executorExterno;
 	private Configuracao configuracao;
-	private Long segundosEspera = 5L;
-	
+	private ConnectionWrapper connectionWrapper;
+	private int segundosParaEsperarJboss = 5;
 	/** 
 	 * see com.compsis.configurador.dominio.Atividade#executar(com.compsis.configurador.dominio.Execucao)
 	 */
@@ -37,12 +40,24 @@ public class IniciarServico implements Atividade {
 		} else {
 			Integer retornoDoPrograma = inicioServico.obterDaSessao(Constantes.RETORNO_PROGRAMA.toString());
 			execucao.info("Retorno do programa: "+retornoDoPrograma);				
-//			try {
-//				Thread.sleep(segundosEspera * 1000);
-//			} catch (InterruptedException e) {
-//				execucao.error(e.getMessage());
-//				execucao.logger().debug(e.getMessage(), e);
-//			}
+			
+			Connection connection = null;
+			boolean conexaoValida = false;
+			do {
+				try {
+					connection = connectionWrapper.getConnection();
+					conexaoValida = !connection.isClosed();
+				} catch (Exception e) {
+					execucao.warn("Aguardando Jboss. Datasource ainda não respondeu conexão com o banco. Tempo de espera: "
+							+ segundosParaEsperarJboss + " segundos");
+					execucao.logger().warn(e.getMessage(), e);
+					try {
+						Thread.sleep(segundosParaEsperarJboss * 1000);
+					} catch (InterruptedException e1) {
+						execucao.logger().error(e1.getMessage(), e1);
+					}
+				}
+			} while (connection == null || !conexaoValida);
 		}
 	}
 
@@ -61,5 +76,14 @@ public class IniciarServico implements Atividade {
 	 */
 	public void setConfiguracao(Configuracao configuracao) {
 		this.configuracao = configuracao;
+	}
+	
+	/**
+	 * Valor de connectionWrapper atribuído a connectionWrapper
+	 *
+	 * @param connectionWrapper Atributo da Classe
+	 */
+	public void setConnectionWrapper(ConnectionWrapper connectionWrapper) {
+		this.connectionWrapper = connectionWrapper;
 	}
 }

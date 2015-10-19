@@ -35,7 +35,7 @@ public final class Versoes {
 	 * @return vetor de {@link String} contendo os blocos de versionamento
 	 */
 	public static String[] obterVersaoAPartirDoNome(String nome) {
-		nome = nome . replace("-", ".");
+		nome = nome . replace("-", ".").replace("[", "").replace("]", "").replace(",", ".").replace(" ", "");
 		String[] versaoSplit = nome.split("\\.");
 		List<String> versoes = new ArrayList<String>(Arrays.asList(versaoSplit));
 		Iterator<String> listIterator = versoes.iterator();

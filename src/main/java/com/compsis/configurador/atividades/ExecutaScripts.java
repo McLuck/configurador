@@ -16,7 +16,7 @@ import com.compsis.configurador.dominio.Execucao;
  * ---------------------- <br>
  * FINALIDADE: <br>
  * Executa os scripts definidos em {@link Constantes#VERSOES_SCRIPTS_PARA_EXECUCAO}
- * disponíveis nos arquivos do mapa {@link Constantes#MAPA_SCRIPTS_PARA_EXECUCAO}
+ * disponíveis nos arquivos do mapa {@link Constantes#MAPA_SCRIPTS_ATUALIZACOES_DISPONIVEIS}
  * <br>
  * HISTÓRICO DE DESENVOLVIMENTO: <br>
  * 05/10/2015 - @author Lucas Israel - Primeira versão da classe. <br>
@@ -34,7 +34,7 @@ public class ExecutaScripts implements Atividade {
 	public void executar(Execucao execucao) {
 		execucao.info("Iniciando execução de scripts");
 		List<String[]> versoesDisponiveis = execucao.obterDaSessao(Constantes.VERSOES_SCRIPTS_PARA_EXECUCAO.toString());
-		Map<String, File> scriptPorVersao = execucao.obterDaSessao(Constantes.MAPA_SCRIPTS_PARA_EXECUCAO.toString());
+		Map<String, File> scriptPorVersao = execucao.obterDaSessao(Constantes.MAPA_SCRIPTS_ATUALIZACOES_DISPONIVEIS.toString());
 		for (String[] versao : versoesDisponiveis) {
 			File arquivoSQL = scriptPorVersao.get(Arrays.toString(versao));
 			executorQueryGenerico.executarArquivo(arquivoSQL, execucao.logger());

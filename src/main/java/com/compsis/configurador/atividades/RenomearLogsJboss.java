@@ -5,6 +5,7 @@ import java.io.File;
 import java.io.FilenameFilter;
 import java.io.IOException;
 
+import com.compsis.configurador.Configuracao;
 import com.compsis.configurador.Constantes;
 import com.compsis.configurador.dominio.Atividade;
 import com.compsis.configurador.dominio.Execucao;
@@ -26,6 +27,7 @@ import com.google.common.io.Files;
  */
 
 public class RenomearLogsJboss implements Atividade {
+	private Configuracao configuracao;
 	/** 
 	 * @see com.compsis.configurador.dominio.Atividade#executar(com.compsis.configurador.dominio.Execucao)
 	 */
@@ -35,32 +37,42 @@ public class RenomearLogsJboss implements Atividade {
 		String stdoutPath = System.getenv("STDOUT");
 		if(atualizacaoVersao.isRenomearLogs()) {
 			if(Strings.isNullOrEmpty(stdoutPath)) {
-				execucao.warn("Variável de ambiente STDOUT não definida. Favor definir variavel de ambiente referenciando a pasta do STDOUT do sistema. Não será possível renomear logs.");
-			} else {
-				File rootLog = new File(stdoutPath);
-				File pastasRenomeados = new File(rootLog, "logs_renomeados");
-				if(!pastasRenomeados.exists()) {
-					pastasRenomeados.mkdirs();
+				stdoutPath = new File(configuracao.getConfigurador().getPastaRaizInfra(), "bin").getAbsolutePath(); 
+				execucao.warn("Variável de ambiente STDOUT não definida. Favor definir variavel de ambiente referenciando a pasta do STDOUT do sistema. Utilizando diretório padrão: " + stdoutPath);
+			}
+			File rootLog = new File(stdoutPath);
+			File pastasRenomeados = new File(rootLog, "logs_renomeados");
+			if(!pastasRenomeados.exists()) {
+				pastasRenomeados.mkdirs();
+			}
+			File[] logs = rootLog.listFiles(new FilenameFilter() {
+				public boolean accept(File dir, String name) {
+					return name.toLowerCase().endsWith(".log");
 				}
-				File[] logs = rootLog.listFiles(new FilenameFilter() {
-					public boolean accept(File dir, String name) {
-						return name.toLowerCase().endsWith(".log");
-					}
-				});
-				String prefixo = String.valueOf(System.currentTimeMillis()).substring(7) + "_";
-				for (File log : logs) {
-					try {
-						Files.move(log, new File(pastasRenomeados, prefixo + log.getName()));
-					} catch (IOException e) {
-						execucao.logger().error(e.getMessage());
-						execucao.logger().debug(e.getMessage(), e);
-					}
+			});
+			String prefixo = String.valueOf(System.currentTimeMillis()).substring(7) + "_";
+			for (File log : logs) {
+				try {
+					Files.move(log, new File(pastasRenomeados, prefixo + log.getName()));
+				} catch (IOException e) {
+					execucao.logger().error(e.getMessage());
+					execucao.logger().debug(e.getMessage(), e);
 				}
 			}
+			
 		}
 	}
 	
 	public static void main(String[] args) {
 		System.out.println(System.currentTimeMillis());
+	}
+	
+	/**
+	 * Valor de configuracao atribuído a configuracao
+	 *
+	 * @param configuracao Atributo da Classe
+	 */
+	public void setConfiguracao(Configuracao configuracao) {
+		this.configuracao = configuracao;
 	}
 }

@@ -69,6 +69,12 @@ http://www.springframework.org/schema/util/spring-util.xsd">
 				<ref bean="fazerBackupVersaoAtual" />
 				<ref bean="apagarVersaoAtual" />
 				<ref bean="renomearLogsJboss" />
+				<ref bean="prepararScriptsAtualizacao" />
+				<ref bean="iniciarServico" />
+				<ref bean="executaScripts" />
+				<ref bean="pararServico" />
+				<ref bean="renomearLogsJboss" />
+				<ref bean="instalaVersaoSelecionada" />
 				<ref bean="iniciarServico" />
 			</util:list>
 		</constructor-arg>
@@ -101,6 +107,7 @@ http://www.springframework.org/schema/util/spring-util.xsd">
 	<bean id="iniciarServico" class="com.compsis.configurador.atividades.IniciarServico">
 		<property name="executorExterno" ref="executorExterno" />
 		<property name="configuracao" ref="configuracao" />
+		<property name="connectionWrapper" ref="connectionWrapper" />
 	</bean>
 	<bean id="pararServico" class="com.compsis.configurador.atividades.PararServico">
 		<property name="executorExterno" ref="executorExterno" />
@@ -134,7 +141,13 @@ http://www.springframework.org/schema/util/spring-util.xsd">
 	<bean id="apagarArquivosTemporariosJboss" class="com.compsis.configurador.atividades.ApagarArquivosTemporariosJboss">
 		<property name="configuracao" ref="configuracao" />
 	</bean>
-	<bean id="renomearLogsJboss" class="com.compsis.configurador.atividades.RenomearLogsJboss" />
+	<bean id="renomearLogsJboss" class="com.compsis.configurador.atividades.RenomearLogsJboss">
+		<property name="configuracao" ref="configuracao" />
+	</bean>
+	<bean id="executaScripts" class="com.compsis.configurador.atividades.ExecutaScripts">
+		<property name="executorQueryGenerico" ref="executorQueryGenerico" />
+	</bean>
+	<bean id="prepararScriptsAtualizacao" class="com.compsis.configurador.atividades.PrepararScriptsAtualizacao" />
 	<bean id="salvarInstalacaoJboss6SA" class="com.compsis.configurador.atividades.SalvarInstalacaoJboss6SA">
 		<property name="configuracao" ref="configuracao" />
 	</bean>

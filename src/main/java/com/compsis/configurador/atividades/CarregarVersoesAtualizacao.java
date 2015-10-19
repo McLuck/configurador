@@ -58,7 +58,7 @@ public class CarregarVersoesAtualizacao implements Atividade{
 		Iterator<String[]> listIterator = listaDeVersoes.iterator();
 		while (listIterator.hasNext()) {
 			String[] versao = (String[]) listIterator.next();
-			if( new VersaoComparator().compare(versaoAtual, versao) <= 0 ) {
+			if( new VersaoComparator().compare(versaoAtual, versao) >= 0 ) {
 				execucao.info("Removendo arquivo anterior ou igual a versão atual. Versão atual: "
 								+Arrays.toString(versaoAtual)+". Removendo arquivo da versão "+Arrays.toString(versao));
 				arquivosPorVersao.remove(Arrays.toString(versao));
