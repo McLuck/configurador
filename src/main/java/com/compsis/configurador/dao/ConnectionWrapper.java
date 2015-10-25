@@ -129,6 +129,7 @@ public class ConnectionWrapper {
                 dataBaseName = "MCKOI";
             }
 
+            conn.setAutoCommit(false);
             return conn;
         } catch (SQLException se) {
         	throw new RuntimeException(se );
@@ -160,7 +161,7 @@ public class ConnectionWrapper {
      */
 
 
-    private DataSource getDataSource() throws RuntimeException {
+    DataSource getDataSource() throws RuntimeException {
 
         try {
             DataSource ds = (DataSource) ctx.lookup(datasourceName);

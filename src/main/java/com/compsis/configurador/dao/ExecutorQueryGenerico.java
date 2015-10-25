@@ -2,9 +2,11 @@
 package com.compsis.configurador.dao;
 
 import java.io.BufferedInputStream;
+import java.io.BufferedReader;
+import java.io.BufferedWriter;
 import java.io.File;
-import java.io.FileNotFoundException;
 import java.io.FileReader;
+import java.io.FileWriter;
 import java.io.IOException;
 import java.net.URL;
 import java.nio.charset.Charset;
@@ -22,7 +24,6 @@ import org.slf4j.Logger;
 
 import com.google.common.base.Charsets;
 import com.google.common.io.Files;
-import com.ibatis.common.jdbc.ScriptRunner;
 
 /** 
  * DOCUMENTAÇÃO DA CLASSE <br>
@@ -38,6 +39,15 @@ import com.ibatis.common.jdbc.ScriptRunner;
  */
 
 public class ExecutorQueryGenerico {
+	static List<String> comandosProibidos = new ArrayList<String>();
+	{
+		comandosProibidos.add("spool");
+		comandosProibidos.add("alter session");
+		comandosProibidos.add("set serveroutput on");
+		comandosProibidos.add("set linesize");
+		comandosProibidos.add("spool off");		
+		comandosProibidos.add("set pagesize");		
+	}
 	private ConnectionWrapper connectionWrapper;
 	/**
 	 * Valor de connectionWrapper atribuído a connectionWrapper
@@ -116,6 +126,35 @@ public class ExecutorQueryGenerico {
         }
 	}
 	
+	private void limparArquivoScript(final File file) throws IOException {
+		File emProcessamento = new File(file.getParentFile(), file.getName()+"_processando");
+		BufferedReader reader = new BufferedReader(new FileReader(file));
+		BufferedWriter writer = new BufferedWriter(new FileWriter(emProcessamento));
+		String linha;
+		
+		while( (linha = reader.readLine()) !=null ) {
+			if(isLinhaPermitida(linha)) {
+				writer.write(linha);
+				writer.newLine();				
+			}
+		}
+		
+		reader.close();
+		writer.flush();
+		writer.close();
+		Files.move(emProcessamento, file);
+	}
+	
+	private boolean isLinhaPermitida(String linha) {
+		for (String comando : comandosProibidos) {
+			if(linha.toString().toLowerCase().startsWith(comando.toLowerCase().trim())) {
+				return false;
+			}
+		}
+		return true;
+	}
+	
+	
 	/**
 	 * Executa scripts do arquivo informado por parametro
 	 * @param arquivoScript
@@ -126,6 +165,7 @@ public class ExecutorQueryGenerico {
 		Connection connection = connectionWrapper.getConnection();
 		ScriptRunner sr = new ScriptRunner(connection, false, false);
 		try {
+			limparArquivoScript(arquivoScript);
 			sr.runScript(new FileReader(arquivoScript));
 			connection.commit();
 		} catch (Exception e1) {
